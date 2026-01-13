@@ -78,6 +78,18 @@ export default function Navbar() {
             Standings
           </Link>
           <Link 
+            href="/leagues" 
+            className="text-[var(--text-grey)] hover:text-emerald-400 transition-colors uppercase tracking-widest hidden md:flex items-center gap-1.5 text-xs font-medium"
+          >
+            <span>🏆</span> Leagues
+          </Link>
+          <Link 
+            href="/friends" 
+            className="text-[var(--text-grey)] hover:text-purple-400 transition-colors uppercase tracking-widest hidden md:flex items-center gap-1.5 text-xs font-medium"
+          >
+            <span>👥</span> Friends
+          </Link>
+          <Link 
             href="/rivalries" 
             className="text-[var(--text-grey)] hover:text-[var(--signal-red)] transition-colors uppercase tracking-widest hidden md:flex items-center gap-1.5 text-xs font-medium"
           >
