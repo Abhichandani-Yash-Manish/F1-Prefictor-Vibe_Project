@@ -1,7 +1,1 @@
-fastapi==0.123.0
-uvicorn==0.38.0
-supabase==2.24.0
-python-dotenv==1.2.1
-pydantic==2.12.5
-pydantic_core==2.41.5
-slowapi==0.1.9
+fastapi>=0.100.0
