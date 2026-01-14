@@ -1,5 +1,7 @@
-from backend.main import app
+# Vercel Python Serverless Entry Point
+# This file exposes the FastAPI app for Vercel's ASGI handler
 
-# Vercel needs the `app` variable to be exposed at the module level.
-# This file acts as a proxy to the actual FastAPI app.
+from .main import app
+
+# Vercel Python runtime looks for `app` variable
 handler = app
