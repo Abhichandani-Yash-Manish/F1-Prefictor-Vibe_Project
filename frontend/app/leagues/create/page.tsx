@@ -57,19 +57,26 @@ export default function CreateLeaguePage() {
       if (response.ok) {
         router.push(`/leagues/${data.league.id}`);
       } else {
+        // DEBUG: Capture full context
+        const context = {
+          status: response.status,
+          statusText: response.statusText,
+          data: data
+        };
+        console.log("Debug Context:", context);
+        
         const errorMsg = typeof data.detail === 'string' 
           ? data.detail 
           : JSON.stringify(data.detail);
-        setError(errorMsg || "Failed to create league");
+          
+        setError(`[${response.status}] ${errorMsg || "Unknown Error"}`);
       }
     } catch (err: any) {
       console.error("League creation error:", err);
-      // If it's a JSON parse error, it might be a 404/500 HTML page
-      if (err instanceof SyntaxError) {
-        setError("Server error (Invalid JSON response). Check backend logs.");
-      } else {
-        setError(err.message || "Network error. Please try again.");
-      }
+      // Detailed catch
+      let msg = err.message || "Network Error";
+      if (err instanceof SyntaxError) msg = "JSON Parse Error (Response might be HTML/404)";
+      setError(`[Client Exception] ${msg}`);
     } finally {
       setLoading(false);
     }

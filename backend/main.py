@@ -512,6 +512,7 @@ def get_league(request: Request, league_id: int, user_id: str = Depends(verify_u
 @limiter.limit("10/minute")
 def create_league(request: Request, league_input: LeagueCreateInput, user_id: str = Depends(verify_user)):
     """Create a new league."""
+    print(f"Received create_league request from {user_id}. Data: {league_input}")
     try:
         invite_code = generate_invite_code()
         
