@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { createBrowserClient } from "@supabase/ssr";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { config } from "../../../lib/config";
+import { api } from "../../../lib/api";
 import LeagueChat from "../../components/LeagueChat";
 
 const supabase = createBrowserClient(
@@ -64,21 +64,21 @@ export default function LeagueDetailPage() {
 
       setCurrentUserId(session.user.id);
 
-      const response = await fetch(`${config.apiUrl}/leagues/${leagueId}/standings`, {
-        headers: {
-          "Authorization": `Bearer ${session.access_token}`
-        }
-      });
+      const result = await api.get<{ league: League; standings: Standing[] }>(
+        `/leagues/${leagueId}/standings`,
+        session.access_token
+      );
 
-      if (response.ok) {
-        const data = await response.json();
-        setLeague(data.league);
-        setStandings(data.standings || []);
-        setIsMember(data.standings?.some((s: Standing) => s.user_id === session.user.id) || false);
-      } else if (response.status === 403) {
+      if (result.ok) {
+        setLeague(result.data.league);
+        setStandings(result.data.standings || []);
+        setIsMember(result.data.standings?.some((s: Standing) => s.user_id === session.user.id) || false);
+      } else if (result.status === 403) {
         setError("You don't have access to this private league");
-      } else if (response.status === 404) {
+      } else if (result.status === 404) {
         setError("League not found");
+      } else {
+        setError(result.error || "Failed to load league");
       }
     } catch (err) {
       console.error("Error fetching league:", err);
@@ -108,23 +108,18 @@ export default function LeagueDetailPage() {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) return;
 
-      const response = await fetch(`${config.apiUrl}/leagues/${leagueId}/invite`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${session.access_token}`
-        },
-        body: JSON.stringify({ username_or_email: inviteUsername.trim() })
-      });
+      const result = await api.post<{ message: string }>(
+        `/leagues/${leagueId}/invite`,
+        { username_or_email: inviteUsername.trim() },
+        session.access_token
+      );
 
-      const data = await response.json();
-
-      if (response.ok) {
-        setSuccess(data.message);
+      if (result.ok) {
+        setSuccess(result.data.message);
         setInviteUsername("");
         setShowInviteModal(false);
       } else {
-        setError(data.detail || "Failed to send invite");
+        setError(result.error || "Failed to send invite");
       }
     } catch (err) {
       setError("Network error");
@@ -140,18 +135,12 @@ export default function LeagueDetailPage() {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) return;
 
-      const response = await fetch(`${config.apiUrl}/leagues/${leagueId}/leave`, {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${session.access_token}`
-        }
-      });
+      const result = await api.post(`/leagues/${leagueId}/leave`, {}, session.access_token);
 
-      if (response.ok) {
+      if (result.ok) {
         router.push("/leagues");
       } else {
-        const data = await response.json();
-        setError(data.detail || "Failed to leave league");
+        setError(result.error || "Failed to leave league");
       }
     } catch (err) {
       setError("Network error");
@@ -165,18 +154,12 @@ export default function LeagueDetailPage() {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) return;
 
-      const response = await fetch(`${config.apiUrl}/leagues/${leagueId}`, {
-        method: "DELETE",
-        headers: {
-          "Authorization": `Bearer ${session.access_token}`
-        }
-      });
+      const result = await api.delete(`/leagues/${leagueId}`, session.access_token);
 
-      if (response.ok) {
+      if (result.ok) {
         router.push("/leagues");
       } else {
-        const data = await response.json();
-        setError(data.detail || "Failed to delete league");
+        setError(result.error || "Failed to delete league");
       }
     } catch (err) {
       setError("Network error");

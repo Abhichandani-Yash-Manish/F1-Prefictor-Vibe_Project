@@ -4,7 +4,7 @@ import { useState } from "react";
 import { createBrowserClient } from "@supabase/ssr";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { config } from "../../../lib/config";
+import { api } from "../../../lib/api";
 
 const supabase = createBrowserClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -35,75 +35,30 @@ export default function CreateLeaguePage() {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
         setError("Please log in to create a league");
+        setLoading(false);
         return;
       }
 
+      const result = await api.post<{ league: { id: number } }>(
+        '/leagues',
+        {
+          name: name.trim(),
+          description: description.trim() || null,
+          is_public: isPublic,
+          max_members: maxMembers
+        },
+        session.access_token
+      );
 
-      // 1. Sanitize Token
-      // Remove only control characters (newlines, tabs) which break Headers in Safari/WebKit
-      // Do NOT strip other punctuation as JWTs can contain +, /, =, -, _
-      const safeToken = session.access_token.trim().replace(/[\r\n\t]/g, '');
-      
-      // 2. Simple, clean URL
-      // Use the config URL directly, ensuring no spaces.
-      const baseUrl = config.apiUrl.trim();
-      const targetUrl = baseUrl.endsWith('/') 
-        ? `${baseUrl}leagues` 
-        : `${baseUrl}/leagues`;
-
-      console.log(`[Fetch Start] URL: ${targetUrl}`);
-
-      try {
-        const headers = new Headers({
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${safeToken}`
-        });
-        
-        const response = await fetch(targetUrl, {
-          method: "POST",
-          headers: headers,
-          body: JSON.stringify({
-             name: name.trim(),
-             description: description.trim() || null,
-             is_public: isPublic,
-             max_members: maxMembers
-          })
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          router.push(`/leagues/${data.league.id}`);
-        } else {
-             // DEBUG: Capture full context
-            const context = {
-              status: response.status,
-              statusText: response.statusText,
-              url: targetUrl,
-              data: data
-            };
-            console.log("Debug Context:", context);
-            
-            const errorMsg = typeof data.detail === 'string' 
-              ? data.detail 
-              : JSON.stringify(data.detail);
-              
-            setError(`[${response.status}] ${errorMsg || "Unknown Error"}`);
-        }
-      } catch (innerErr: any) {
-        // Catch Header creation errors specifically
-        console.error("Fetch/Header Error:", innerErr);
-        throw innerErr; // Re-throw to main catcher
+      if (result.ok) {
+        router.push(`/leagues/${result.data.league.id}`);
+      } else {
+        setError(result.error || "Failed to create league");
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("League creation error:", err);
-      // Detailed catch with visible variables
-      let msg = err.message || "Network Error";
-      if (err instanceof SyntaxError) msg = "JSON Parse Error (Response might be HTML/404)";
-      
-      // Show the URL we TRIED to hit, so we know if it's absolute or relative
-      const triedUrl = config.apiUrl.startsWith('http') ? "Localhost Link" : "Production Link";
-      setError(`[Client Exception] ${msg} | ${triedUrl}`);
+      const message = err instanceof Error ? err.message : "Unknown error";
+      setError(message);
     } finally {
       setLoading(false);
     }
