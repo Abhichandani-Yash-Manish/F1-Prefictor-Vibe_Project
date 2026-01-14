@@ -38,61 +38,62 @@ export default function CreateLeaguePage() {
         return;
       }
 
-      // ROBUST FIX:
-      // 1. Aggressively sanitize token to ONLY allow valid JWT characters (base64url safe).
-      //    This removes ANY invisible char, non-breaking space, or emoji that crashes Headers.
-      const safeToken = session.access_token.replace(/[^A-Za-z0-9._-]/g, '');
-      
-      if (!safeToken) {
-        throw new Error("Authentication token is invalid (empty after sanitization).");
-      }
 
-      // 2. Force Absolute URL.
-      //    Some browsers/proxies choke on relative URLs in specific contexts.
-      //    We construct a full URL using the guaranteed window.location.origin.
-      const origin = typeof window !== 'undefined' ? window.location.origin : '';
-      const apiPath = config.apiUrl.startsWith('/') ? config.apiUrl : `/${config.apiUrl}`;
+      // 1. Sanitize Token
+      // Remove only control characters (newlines, tabs) which break Headers in Safari/WebKit
+      // Do NOT strip other punctuation as JWTs can contain +, /, =, -, _
+      const safeToken = session.access_token.trim().replace(/[\r\n\t]/g, '');
       
-      // If config.apiUrl is already http (localhost), use it. If it's relative (/api), append to origin.
-      const targetUrl = config.apiUrl.startsWith('http') 
-        ? `${config.apiUrl}/leagues`
-        : `${origin}${apiPath}/leagues`;
-      
-      console.log(`[Robust Fetch] URL: ${targetUrl} | TokenLen: ${safeToken.length}`);
+      // 2. Simple, clean URL
+      // Use the config URL directly, ensuring no spaces.
+      const baseUrl = config.apiUrl.trim();
+      const targetUrl = baseUrl.endsWith('/') 
+        ? `${baseUrl}leagues` 
+        : `${baseUrl}/leagues`;
 
-      const response = await fetch(targetUrl, {
-        method: "POST",
-        headers: {
+      console.log(`[Fetch Start] URL: ${targetUrl}`);
+
+      try {
+        const headers = new Headers({
           "Content-Type": "application/json",
           "Authorization": `Bearer ${safeToken}`
-        },
-        body: JSON.stringify({
-          name: name.trim(),
-          description: description.trim() || null,
-          is_public: isPublic,
-          max_members: maxMembers
-        })
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        router.push(`/leagues/${data.league.id}`);
-      } else {
-        // DEBUG: Capture full context
-        const context = {
-          status: response.status,
-          statusText: response.statusText,
-          url: targetUrl,
-          data: data
-        };
-        console.log("Debug Context:", context);
+        });
         
-        const errorMsg = typeof data.detail === 'string' 
-          ? data.detail 
-          : JSON.stringify(data.detail);
-          
-        setError(`[${response.status}] ${errorMsg || "Unknown Error"}`);
+        const response = await fetch(targetUrl, {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify({
+             name: name.trim(),
+             description: description.trim() || null,
+             is_public: isPublic,
+             max_members: maxMembers
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          router.push(`/leagues/${data.league.id}`);
+        } else {
+             // DEBUG: Capture full context
+            const context = {
+              status: response.status,
+              statusText: response.statusText,
+              url: targetUrl,
+              data: data
+            };
+            console.log("Debug Context:", context);
+            
+            const errorMsg = typeof data.detail === 'string' 
+              ? data.detail 
+              : JSON.stringify(data.detail);
+              
+            setError(`[${response.status}] ${errorMsg || "Unknown Error"}`);
+        }
+      } catch (innerErr: any) {
+        // Catch Header creation errors specifically
+        console.error("Fetch/Header Error:", innerErr);
+        throw innerErr; // Re-throw to main catcher
       }
     } catch (err: any) {
       console.error("League creation error:", err);
