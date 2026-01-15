@@ -965,3 +965,22 @@ select {
   50% { transform: translate(-1px, 0); }
   75% { transform: translate(0, -1px); }
 }
+
+/* ═══════════════════════════════════════════
+   ANIMATIONS - Team Radio
+   ═══════════════════════════════════════════ */
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slideIn {
+  animation: slideIn 0.3s ease-out;
+}

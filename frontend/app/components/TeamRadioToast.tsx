@@ -96,21 +96,7 @@ export function TeamRadioProvider({ children }: { children: React.ReactNode }) {
         </div>,
         document.body
       )}
-      <style jsx global>{`
-        @keyframes slideIn {
-          from {
-            transform: translateX(100%);
-            opacity: 0;
-          }
-          to {
-            transform: translateX(0);
-            opacity: 1;
-          }
-        }
-        .animate-slideIn {
-          animation: slideIn 0.3s ease-out;
-        }
-      `}</style>
+
     </>
   );
 }
