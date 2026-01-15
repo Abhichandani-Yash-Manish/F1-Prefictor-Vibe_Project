@@ -60,7 +60,7 @@ export async function middleware(request: NextRequest) {
 
   // 3. Define Restricted Areas
   // If the URL starts with any of these, we check for login
-  const protectedPaths = ['/predict', '/submissions', '/results', '/admin']
+  const protectedPaths = ['/predict', '/submissions', '/admin']
   const isProtected = protectedPaths.some(path => request.nextUrl.pathname.startsWith(path))
 
   // 4. The Bouncer Logic

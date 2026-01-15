@@ -50,6 +50,7 @@ export const metadata: Metadata = {
   description: "Your pit wall command center. Predict qualifying and race results, compete with rivals, and climb the championship standings. Experience F1 like a race engineer.",
   keywords: ["F1", "Formula 1", "predictions", "racing", "motorsport", "league", "fantasy F1", "telemetry", "pit wall"],
   authors: [{ name: "F1 Apex" }],
+  manifest: "/manifest.json",
   openGraph: {
     title: "F1 Apex | Telemetry Command Center",
     description: "Your pit wall command center for F1 predictions",

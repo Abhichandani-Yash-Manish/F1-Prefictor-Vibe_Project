@@ -4,6 +4,11 @@ import { useEffect, useState } from "react";
 import { createBrowserClient } from "@supabase/ssr";
 import Link from "next/link";
 import { api } from "../../lib/api";
+import LoadingSpinner from "../components/LoadingSpinner";
+import GlassCard from "../components/ui/GlassCard";
+import Badge from "../components/ui/Badge";
+import F1Button from "../components/ui/F1Button";
+import PageHeader from "../components/ui/PageHeader";
 
 // Initialize Supabase client
 const supabase = createBrowserClient(
@@ -149,68 +154,68 @@ export default function LeaguesPage() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#050505] flex items-center justify-center">
-        <div className="text-white font-orbitron animate-pulse text-xl tracking-widest">
-          LOADING LEAGUES...
-        </div>
-      </div>
-    );
-  }
+  if (loading) return <LoadingSpinner message="Loading Leagues..." />;
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white p-6 md:p-12">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-[var(--bg-void)] pt-24 pb-16">
+      <div className="max-w-6xl mx-auto px-6">
+        
         {/* Header */}
-        <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div className="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div>
-            <h1 className="text-5xl md:text-6xl font-black font-orbitron text-white tracking-tighter">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">LEAGUES</span>
-            </h1>
-            <p className="text-gray-500 mt-2">Compete with friends and rivals in private prediction leagues</p>
+            <PageHeader 
+              title="Leagues" 
+              highlight="" 
+              badgeText="Compete" 
+              badgeVariant="gold"
+              description="Join prediction leagues to compete with friends and rivals. Create your own or explore public leagues."
+            />
           </div>
-          <Link 
+          <F1Button 
             href="/leagues/create"
-            className="bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-bold py-3 px-6 rounded-lg transition-all font-orbitron text-sm tracking-wider"
+            variant="gold"
+            className="shrink-0"
+            icon="+"
           >
-            + CREATE LEAGUE
-          </Link>
+            Create League
+          </F1Button>
         </div>
 
-        {/* Success/Error Messages */}
+        {/* Notifications */}
         {error && (
-          <div className="mb-6 p-4 bg-red-500/20 border border-red-500/50 rounded-lg text-red-400">
+          <div className="mb-6 p-4 rounded-xl bg-[var(--f1-red-dim)] border border-[var(--f1-red)]/30 text-[var(--f1-red)] text-sm">
             {error}
           </div>
         )}
         {success && (
-          <div className="mb-6 p-4 bg-emerald-500/20 border border-emerald-500/50 rounded-lg text-emerald-400">
+          <div className="mb-6 p-4 rounded-xl bg-[rgba(16,185,129,0.12)] border border-[var(--status-success)]/30 text-[var(--status-success)] text-sm">
             {success}
           </div>
         )}
 
         {/* Pending Invites */}
         {pendingInvites.length > 0 && (
-          <div className="mb-8 bg-amber-500/10 border border-amber-500/30 rounded-2xl p-6">
-            <h2 className="text-xl font-bold text-amber-400 mb-4 font-orbitron">PENDING INVITES</h2>
+          <div className="mb-10 telemetry-panel p-6">
+            <h2 className="text-lg font-bold text-[var(--accent-gold)] mb-4 flex items-center gap-2">
+              <span>✉️</span> Pending Invites
+            </h2>
             <div className="space-y-3">
               {pendingInvites.map((invite) => (
-                <div key={invite.id} className="flex items-center justify-between bg-black/30 p-4 rounded-lg">
+                <div key={invite.id} className="flex items-center justify-between bg-[var(--bg-onyx)] p-4 rounded-xl border border-[var(--glass-border)]">
                   <div>
-                    <div className="font-bold">{invite.league_name}</div>
-                    <div className="text-sm text-gray-500">Invited by {invite.inviter_name}</div>
+                    <div className="font-semibold text-white">{invite.league_name}</div>
+                    <div className="text-sm text-[var(--text-muted)]">From {invite.inviter_name}</div>
                   </div>
                   <div className="flex gap-2">
                     <button
                       onClick={() => handleAcceptInvite(invite.id)}
-                      className="bg-emerald-600 hover:bg-emerald-500 px-4 py-2 rounded-lg text-sm font-bold"
+                      className="btn-teal px-4 py-2 text-sm"
                     >
                       Accept
                     </button>
                     <button
                       onClick={() => handleDeclineInvite(invite.id)}
-                      className="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm"
+                      className="btn-ghost px-4 py-2 text-sm border border-[var(--glass-border)]"
                     >
                       Decline
                     </button>
@@ -221,62 +226,68 @@ export default function LeaguesPage() {
           </div>
         )}
 
-        {/* Join League with Code */}
-        <div className="mb-8 bg-[#121418] border border-gray-800 rounded-2xl p-6">
-          <h2 className="text-xl font-bold text-white mb-4 font-orbitron">JOIN WITH INVITE CODE</h2>
-          <form onSubmit={handleJoinLeague} className="flex gap-4">
+        {/* Join with Invite Code */}
+        <GlassCard className="mb-10 p-6">
+          <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+            <span>🔗</span> Join with Invite Code
+          </h2>
+          <form onSubmit={handleJoinLeague} className="flex gap-3">
             <input
               type="text"
               value={inviteCode}
               onChange={(e) => setInviteCode(e.target.value.toUpperCase())}
               placeholder="Enter 8-character code"
-              className="flex-1 bg-black/50 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-amber-500 uppercase tracking-widest"
+              className="flex-1 px-4 py-3 uppercase tracking-[0.15em] text-center font-mono rounded-lg bg-[var(--bg-onyx)] border border-[var(--glass-border)] text-white focus:outline-none focus:border-[var(--accent-gold)]"
               maxLength={8}
             />
-            <button
+            <F1Button
               type="submit"
               disabled={joinLoading || !inviteCode.trim()}
-              className="bg-amber-600 hover:bg-amber-500 disabled:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg transition-all font-orbitron text-sm"
+              variant="primary"
+              className="px-6 py-3"
             >
-              {joinLoading ? "JOINING..." : "JOIN"}
-            </button>
+              {joinLoading ? "Joining..." : "Join"}
+            </F1Button>
           </form>
-        </div>
+        </GlassCard>
 
         {/* My Leagues */}
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-white mb-4 font-orbitron">MY LEAGUES</h2>
+        <div className="mb-12">
+          <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+            <span>🏆</span> My Leagues
+          </h2>
           {myLeagues.length === 0 ? (
-            <div className="bg-[#121418] border border-gray-800 rounded-2xl p-8 text-center">
-              <div className="text-gray-500">You haven't joined any leagues yet.</div>
-              <div className="text-gray-600 text-sm mt-2">Create your own or join with an invite code!</div>
-            </div>
+            <GlassCard className="p-12 text-center">
+              <div className="text-4xl mb-4 opacity-40">🏁</div>
+              <div className="text-[var(--text-muted)] mb-2">You haven't joined any leagues yet.</div>
+              <div className="text-sm text-[var(--text-subtle)]">Create your own or join with an invite code!</div>
+            </GlassCard>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {myLeagues.map((membership) => (
                 <Link 
                   key={membership.league_id}
                   href={`/leagues/${membership.league_id}`}
-                  className="bg-[#121418] border border-gray-800 hover:border-amber-500/50 rounded-2xl p-6 transition-all group"
+                  className="group telemetry-panel p-6 hover:border-[var(--accent-gold)]/40 transition-all"
                 >
-                  <div className="flex items-start justify-between mb-3">
-                    <h3 className="font-bold text-lg group-hover:text-amber-400 transition-colors">
+                  <div className="flex items-start justify-between mb-4">
+                    <h3 className="font-semibold text-lg text-white group-hover:text-[var(--accent-gold)] transition-colors">
                       {membership.leagues.name}
                     </h3>
-                    <span className={`text-xs px-2 py-1 rounded ${
-                      membership.role === 'owner' ? 'bg-amber-500/20 text-amber-400' :
-                      membership.role === 'admin' ? 'bg-blue-500/20 text-blue-400' :
-                      'bg-gray-700 text-gray-400'
+                    <span className={`badge ${
+                      membership.role === 'owner' ? 'badge-gold' :
+                      membership.role === 'admin' ? 'badge-cyan' :
+                      'bg-[var(--bg-graphite)] text-[var(--text-muted)] border border-[var(--glass-border)]'
                     }`}>
-                      {membership.role.toUpperCase()}
+                      {membership.role}
                     </span>
                   </div>
-                  <p className="text-gray-500 text-sm mb-4 line-clamp-2">
+                  <p className="text-[var(--text-muted)] text-sm mb-4 line-clamp-2">
                     {membership.leagues.description || "No description"}
                   </p>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-emerald-400 font-bold">{membership.season_points} pts</span>
-                    <span className="text-gray-600">
+                    <span className="text-[var(--accent-cyan)] font-bold font-mono">{membership.season_points} pts</span>
+                    <span className="text-[var(--text-subtle)]">
                       {membership.leagues.is_public ? "Public" : "Private"}
                     </span>
                   </div>
@@ -289,31 +300,30 @@ export default function LeaguesPage() {
         {/* Public Leagues */}
         {publicLeagues.length > 0 && (
           <div>
-            <h2 className="text-2xl font-bold text-white mb-4 font-orbitron">DISCOVER LEAGUES</h2>
+            <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+              <span>🌐</span> Discover Public Leagues
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {publicLeagues.map((league) => (
-                <div 
+                <GlassCard 
                   key={league.id}
-                  className="bg-[#121418] border border-gray-800 rounded-2xl p-6"
+                  className="p-6"
                 >
-                  <div className="flex items-start justify-between mb-3">
-                    <h3 className="font-bold text-lg">{league.name}</h3>
-                    <span className="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400">
-                      PUBLIC
-                    </span>
+                  <div className="flex items-start justify-between mb-4">
+                    <h3 className="font-semibold text-lg text-white">{league.name}</h3>
+                    <Badge variant="cyan">Public</Badge>
                   </div>
-                  <p className="text-gray-500 text-sm mb-4 line-clamp-2">
+                  <p className="text-[var(--text-muted)] text-sm mb-4 line-clamp-2">
                     {league.description || "No description"}
                   </p>
-                  <button
-                    onClick={() => {
-                      setInviteCode(league.invite_code);
-                    }}
-                    className="w-full bg-gray-700 hover:bg-gray-600 text-white py-2 rounded-lg text-sm font-bold transition-colors"
+                  <F1Button
+                    onClick={() => setInviteCode(league.invite_code)}
+                    variant="secondary"
+                    className="w-full py-2.5 text-sm"
                   >
-                    JOIN LEAGUE
-                  </button>
-                </div>
+                    Join League
+                  </F1Button>
+                </GlassCard>
               ))}
             </div>
           </div>

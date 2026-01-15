@@ -1,15 +1,18 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import { getDriverName, getDriverNumber, TEAM_COLORS, getDriverTeam } from "../lib/drivers";
 
 interface RivalryCardProps {
   player1: {
+    id?: string;
     name: string;
     driver: string;
     points: number;
     avatar?: string;
   };
   player2?: {
+    id?: string;
     name: string;
     driver: string;
     points: number;
@@ -88,26 +91,50 @@ export default function RivalryCard({ player1, player2, races, onChallenge }: Ri
           
           {/* PLAYER 1 (LEFT) */}
           <div className="flex-1 text-left relative">
-            <div className="relative z-10">
-              <div 
-                className="w-20 h-20 mb-4 rounded-2xl flex items-center justify-center border-b-4 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)] transition-transform group-hover:-translate-y-2 duration-300"
-                style={{ 
-                  backgroundColor: `${color1}`,
-                  borderColor: 'rgba(255,255,255,0.2)',
-                  boxShadow: `0 0 20px -5px ${color1}40`
-                }}
-              >
-                <span className="font-orbitron text-3xl font-black text-white mix-blend-overlay">
-                  {getDriverNumber(getDriverName(player1.driver)) || "P1"}
-                </span>
-              </div>
-              <h3 className="font-orbitron font-black text-2xl text-white leading-none mb-1 tracking-tight">
-                {player1.name.toUpperCase()}
-              </h3>
-              <p className="font-mono text-xs font-bold opacity-60 uppercase tracking-wider" style={{ color: color1 }}>
-                {getDriverName(player1.driver) || "NO DRIVER"}
-              </p>
-            </div>
+            {player1.id ? (
+              <Link href={`/profile/${player1.id}`} className="relative z-10 block hover:scale-105 transition-transform" onClick={(e) => e.stopPropagation()}>
+                <div 
+                  className="w-20 h-20 mb-4 rounded-2xl flex items-center justify-center border-b-4 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]"
+                  style={{ 
+                    backgroundColor: `${color1}`,
+                    borderColor: 'rgba(255,255,255,0.2)',
+                    boxShadow: `0 0 20px -5px ${color1}40`
+                  }}
+                >
+                  <span className="font-orbitron text-3xl font-black text-white mix-blend-overlay">
+                    {getDriverNumber(getDriverName(player1.driver)) || "P1"}
+                  </span>
+                </div>
+                <h3 className="font-orbitron font-black text-2xl text-white leading-none mb-1 tracking-tight hover:text-[var(--accent-cyan)] transition-colors">
+                  {player1.name.toUpperCase()}
+                </h3>
+                <p className="font-mono text-xs font-bold opacity-60 uppercase tracking-wider" style={{ color: color1 }}>
+                  {getDriverName(player1.driver) || "NO DRIVER"}
+                </p>
+              </Link>
+            ) : (
+                <div className="relative z-10">
+                  {/* Previous Non-Link Content */}
+                   <div 
+                    className="w-20 h-20 mb-4 rounded-2xl flex items-center justify-center border-b-4 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)] transition-transform group-hover:-translate-y-2 duration-300"
+                    style={{ 
+                      backgroundColor: `${color1}`,
+                      borderColor: 'rgba(255,255,255,0.2)',
+                      boxShadow: `0 0 20px -5px ${color1}40`
+                    }}
+                  >
+                    <span className="font-orbitron text-3xl font-black text-white mix-blend-overlay">
+                      {getDriverNumber(getDriverName(player1.driver)) || "P1"}
+                    </span>
+                  </div>
+                  <h3 className="font-orbitron font-black text-2xl text-white leading-none mb-1 tracking-tight">
+                    {player1.name.toUpperCase()}
+                  </h3>
+                  <p className="font-mono text-xs font-bold opacity-60 uppercase tracking-wider" style={{ color: color1 }}>
+                    {getDriverName(player1.driver) || "NO DRIVER"}
+                  </p>
+                </div>
+            )}
             
             {/* Background Big Number */}
              <div className="absolute top-0 right-10 text-9xl font-black opacity-[0.03] select-none pointer-events-none" style={{ color: color1 }}>
@@ -122,26 +149,50 @@ export default function RivalryCard({ player1, player2, races, onChallenge }: Ri
 
           {/* PLAYER 2 (RIGHT) */}
            <div className="flex-1 text-right relative">
-            <div className="relative z-10 flex flex-col items-end">
-              <div 
-                className="w-20 h-20 mb-4 rounded-2xl flex items-center justify-center border-b-4 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)] transition-transform group-hover:-translate-y-2 duration-300 delay-75"
-                style={{ 
-                  backgroundColor: `${color2}`,
-                  borderColor: 'rgba(255,255,255,0.2)',
-                  boxShadow: `0 0 20px -5px ${color2}40`
-                }}
-              >
-                 <span className="font-orbitron text-3xl font-black text-white mix-blend-overlay">
-                  {isSolo ? "AI" : (getDriverNumber(getDriverName(p2.driver)) || "P2")}
-                </span>
-              </div>
-              <h3 className="font-orbitron font-black text-2xl text-white leading-none mb-1 tracking-tight">
-                {p2.name.toUpperCase()}
-              </h3>
-               <p className="font-mono text-xs font-bold opacity-60 uppercase tracking-wider" style={{ color: color2 }}>
-                {isSolo ? "AVERAGE SCORE" : (getDriverName(p2.driver) || "NO DRIVER")}
-              </p>
-            </div>
+            {p2.id && !isSolo ? (
+                <Link href={`/profile/${p2.id}`} className="relative z-10 flex flex-col items-end hover:scale-105 transition-transform" onClick={(e) => e.stopPropagation()}>
+                    <div 
+                        className="w-20 h-20 mb-4 rounded-2xl flex items-center justify-center border-b-4 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]"
+                        style={{ 
+                        backgroundColor: `${color2}`,
+                        borderColor: 'rgba(255,255,255,0.2)',
+                        boxShadow: `0 0 20px -5px ${color2}40`
+                        }}
+                    >
+                        <span className="font-orbitron text-3xl font-black text-white mix-blend-overlay">
+                        {isSolo ? "AI" : (getDriverNumber(getDriverName(p2.driver)) || "P2")}
+                        </span>
+                    </div>
+                    <h3 className="font-orbitron font-black text-2xl text-white leading-none mb-1 tracking-tight hover:text-[var(--accent-gold)] transition-colors">
+                        {p2.name.toUpperCase()}
+                    </h3>
+                    <p className="font-mono text-xs font-bold opacity-60 uppercase tracking-wider" style={{ color: color2 }}>
+                        {isSolo ? "AVERAGE SCORE" : (getDriverName(p2.driver) || "NO DRIVER")}
+                    </p>
+                </Link>
+            ) : (
+                <div className="relative z-10 flex flex-col items-end">
+                    {/* Previous Non-Link Content */}
+                    <div 
+                        className="w-20 h-20 mb-4 rounded-2xl flex items-center justify-center border-b-4 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)] transition-transform group-hover:-translate-y-2 duration-300 delay-75"
+                        style={{ 
+                        backgroundColor: `${color2}`,
+                        borderColor: 'rgba(255,255,255,0.2)',
+                        boxShadow: `0 0 20px -5px ${color2}40`
+                        }}
+                    >
+                        <span className="font-orbitron text-3xl font-black text-white mix-blend-overlay">
+                        {isSolo ? "AI" : (getDriverNumber(getDriverName(p2.driver)) || "P2")}
+                        </span>
+                    </div>
+                    <h3 className="font-orbitron font-black text-2xl text-white leading-none mb-1 tracking-tight">
+                        {p2.name.toUpperCase()}
+                    </h3>
+                    <p className="font-mono text-xs font-bold opacity-60 uppercase tracking-wider" style={{ color: color2 }}>
+                        {isSolo ? "AVERAGE SCORE" : (getDriverName(p2.driver) || "NO DRIVER")}
+                    </p>
+                </div>
+            )}
              {/* Background Big Number */}
              <div className="absolute top-0 left-10 text-9xl font-black opacity-[0.03] select-none pointer-events-none" style={{ color: color2 }}>
                2

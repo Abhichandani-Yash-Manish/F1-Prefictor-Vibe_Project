@@ -29,10 +29,10 @@ export function useKeyboardShortcuts(raceId?: number) {
     },
     {
       key: 'r',
-      description: 'View results',
+      description: 'View leaderboard',
       action: () => {
-        router.push('/results');
-        teamRadio.info("Loading results...");
+        router.push('/leaderboard');
+        teamRadio.info("Loading leaderboard...");
       }
     },
     {
@@ -103,7 +103,7 @@ export function useKeyboardShortcuts(raceId?: number) {
 export function KeyboardShortcutsHelp() {
   const shortcuts = [
     { key: 'P', label: 'PREDICT' },
-    { key: 'R', label: 'RESULTS' },
+    { key: 'R', label: 'LEADERBOARD' },
     { key: 'C', label: 'CALENDAR' },
     { key: 'S', label: 'STANDINGS' },
     { key: 'H', label: 'HOME' },

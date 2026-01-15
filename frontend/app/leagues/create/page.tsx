@@ -65,92 +65,99 @@ export default function CreateLeaguePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white p-6 md:p-12">
-      <div className="max-w-2xl mx-auto">
+    <div className="min-h-screen bg-[var(--bg-void)] pt-24 pb-16">
+      <div className="max-w-2xl mx-auto px-6">
+        
         {/* Header */}
-        <div className="mb-8">
-          <Link href="/leagues" className="text-gray-500 hover:text-white transition flex items-center gap-2 mb-4">
-            ← Back to Leagues
+        <div className="mb-10">
+          <Link href="/leagues" className="inline-flex items-center gap-2 text-[var(--text-muted)] hover:text-white transition-colors mb-6 text-sm">
+            <span>←</span> Back to Leagues
           </Link>
-          <h1 className="text-4xl md:text-5xl font-black font-orbitron text-white tracking-tighter">
-            Create <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-600">League</span>
+          <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight mb-3">
+            Create <span className="text-gradient-gold">League</span>
           </h1>
-          <p className="text-gray-500 mt-2">Set up your own prediction league and invite friends to compete!</p>
+          <p className="text-[var(--text-muted)]">
+            Set up your own prediction league and invite friends to compete.
+          </p>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="bg-[#121418] border border-gray-800 rounded-2xl p-8 shadow-2xl">
+        <form onSubmit={handleSubmit} className="glass-card p-8 md:p-10">
+          
           {/* League Name */}
-          <div className="mb-6">
-            <label className="block text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">
-              League Name *
+          <div className="mb-8">
+            <label className="block text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-[0.1em] mb-3">
+              League Name <span className="text-[var(--f1-red)]">*</span>
             </label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g., Office Pit Lane Crew"
-              className="w-full bg-black/50 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/50"
+              placeholder="e.g., Pit Lane Crew"
+              className="w-full"
               maxLength={50}
               required
             />
-            <div className="text-xs text-gray-600 mt-1">{name.length}/50 characters</div>
+            <div className="flex justify-between mt-2">
+              <span className="text-xs text-[var(--text-subtle)]">Choose a memorable name</span>
+              <span className="text-xs text-[var(--text-subtle)]">{name.length}/50</span>
+            </div>
           </div>
 
           {/* Description */}
-          <div className="mb-6">
-            <label className="block text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">
+          <div className="mb-8">
+            <label className="block text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-[0.1em] mb-3">
               Description
             </label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Tell members what this league is about..."
-              className="w-full bg-black/50 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/50 resize-none h-24"
+              className="w-full resize-none h-24"
               maxLength={250}
             />
-            <div className="text-xs text-gray-600 mt-1">{description.length}/250 characters</div>
+            <div className="text-xs text-[var(--text-subtle)] text-right mt-2">{description.length}/250</div>
           </div>
 
-          {/* Visibility Toggle */}
-          <div className="mb-6">
-            <label className="block text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">
+          {/* Visibility */}
+          <div className="mb-8">
+            <label className="block text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-[0.1em] mb-4">
               Visibility
             </label>
-            <div className="flex gap-4">
+            <div className="grid grid-cols-2 gap-4">
               <button
                 type="button"
                 onClick={() => setIsPublic(false)}
-                className={`flex-1 py-4 px-6 rounded-lg border-2 transition-all ${
+                className={`p-6 rounded-xl border-2 text-center transition-all ${
                   !isPublic 
-                    ? 'border-emerald-500 bg-emerald-500/10 text-emerald-400' 
-                    : 'border-gray-700 text-gray-500 hover:border-gray-600'
+                    ? 'border-[var(--accent-gold)] bg-[var(--accent-gold-dim)]' 
+                    : 'border-[var(--glass-border)] hover:border-[var(--glass-border-light)]'
                 }`}
               >
                 <div className="text-2xl mb-2">🔒</div>
-                <div className="font-bold">Private</div>
-                <div className="text-xs text-gray-500 mt-1">Invite-only</div>
+                <div className={`font-semibold ${!isPublic ? 'text-[var(--accent-gold)]' : 'text-white'}`}>Private</div>
+                <div className="text-xs text-[var(--text-muted)] mt-1">Invite only</div>
               </button>
               <button
                 type="button"
                 onClick={() => setIsPublic(true)}
-                className={`flex-1 py-4 px-6 rounded-lg border-2 transition-all ${
+                className={`p-6 rounded-xl border-2 text-center transition-all ${
                   isPublic 
-                    ? 'border-blue-500 bg-blue-500/10 text-blue-400' 
-                    : 'border-gray-700 text-gray-500 hover:border-gray-600'
+                    ? 'border-[var(--accent-cyan)] bg-[var(--accent-cyan-dim)]' 
+                    : 'border-[var(--glass-border)] hover:border-[var(--glass-border-light)]'
                 }`}
               >
                 <div className="text-2xl mb-2">🌐</div>
-                <div className="font-bold">Public</div>
-                <div className="text-xs text-gray-500 mt-1">Discoverable</div>
+                <div className={`font-semibold ${isPublic ? 'text-[var(--accent-cyan)]' : 'text-white'}`}>Public</div>
+                <div className="text-xs text-[var(--text-muted)] mt-1">Discoverable</div>
               </button>
             </div>
           </div>
 
-          {/* Max Members Slider */}
-          <div className="mb-8">
-            <label className="block text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">
-              Max Members: <span className="text-emerald-400">{maxMembers}</span>
+          {/* Max Members */}
+          <div className="mb-10">
+            <label className="block text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-[0.1em] mb-4">
+              Max Members: <span className="text-[var(--accent-gold)] font-mono">{maxMembers}</span>
             </label>
             <input
               type="range"
@@ -159,34 +166,35 @@ export default function CreateLeaguePage() {
               step="5"
               value={maxMembers}
               onChange={(e) => setMaxMembers(parseInt(e.target.value))}
-              className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+              className="w-full h-2 bg-[var(--bg-graphite)] rounded-full appearance-none cursor-pointer accent-[var(--accent-gold)]"
             />
-            <div className="flex justify-between text-xs text-gray-600 mt-1">
+            <div className="flex justify-between text-xs text-[var(--text-subtle)] mt-3">
               <span>5</span>
               <span>200</span>
             </div>
           </div>
 
-          {/* Error Display */}
+          {/* Error */}
           {error && (
-            <div className="mb-6 p-4 bg-red-500/20 border border-red-500/50 rounded-lg text-red-400">
+            <div className="mb-6 p-4 rounded-xl bg-[var(--f1-red-dim)] border border-[var(--f1-red)]/30 text-[var(--f1-red)] text-sm">
               {error}
             </div>
           )}
 
-          {/* Submit Button */}
+          {/* Submit */}
           <button
             type="submit"
             disabled={loading || !name.trim()}
-            className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 disabled:from-gray-700 disabled:to-gray-800 disabled:cursor-not-allowed text-white font-bold py-4 px-6 rounded-lg transition-all duration-300 font-orbitron tracking-wider text-lg shadow-lg shadow-emerald-500/20"
+            className="w-full btn-gold py-4 text-base font-bold disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? "CREATING..." : "CREATE LEAGUE"}
+            {loading ? "Creating..." : "Create League"}
           </button>
 
-          {/* Info Note */}
-          <div className="mt-6 p-4 bg-gray-800/50 rounded-lg text-sm text-gray-500">
-            <strong className="text-gray-400">💡 Pro Tip:</strong> Once created, you'll get a unique invite code to share with friends. 
-            You can also invite them directly by username!
+          {/* Tip */}
+          <div className="mt-8 p-4 rounded-xl bg-[var(--bg-graphite)] border border-[var(--glass-border)]">
+            <div className="text-sm text-[var(--text-muted)]">
+              <span className="text-[var(--accent-gold)]">💡</span> After creation, you'll receive a unique invite code to share with friends.
+            </div>
           </div>
         </form>
       </div>

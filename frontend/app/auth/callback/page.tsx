@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import { createBrowserClient } from "@supabase/ssr";
 import { useRouter } from "next/navigation";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 export default function AuthCallbackPage() {
   const router = useRouter();
@@ -45,11 +46,5 @@ export default function AuthCallbackPage() {
     handleCallback();
   }, []);
 
-  return (
-    <div className="min-h-screen bg-[#0B0C10] flex flex-col items-center justify-center text-white font-orbitron">
-      <div className="animate-spin text-6xl mb-8">⟳</div>
-      <h1 className="text-2xl tracking-widest animate-pulse">AUTHENTICATING...</h1>
-      <p className="text-gray-500 mt-4 text-sm">You'll be redirected automatically</p>
-    </div>
-  );
+  return <LoadingSpinner message="Authenticating..." />;
 }

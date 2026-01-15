@@ -1,14 +1,5 @@
-# ABSOLUTE MINIMAL - No middleware, no imports except FastAPI
-from fastapi import FastAPI
+# Import everything from main.py
+from main import app
 
-app = FastAPI()
-
-@app.get("/")
-def root():
-    return {"msg": "Hello from Python!"}
-
-@app.get("/health")
-def health():
-    return {"status": "ok"}
-
+# Vercel expects 'handler' or 'app' at module level
 handler = app

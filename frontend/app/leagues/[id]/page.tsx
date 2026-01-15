@@ -345,12 +345,14 @@ export default function LeagueDetailPage() {
                           }}
                         />
                         <div>
+                        <Link href={`/profile/${standing.user_id}`} className="hover:underline hover:text-emerald-400 transition-colors">
                           <span className={`font-bold text-lg ${
                             standing.user_id === currentUserId ? 'text-emerald-400' : 'text-white'
                           }`}>
                             {standing.username}
                             {standing.user_id === currentUserId && ' (You)'}
                           </span>
+                        </Link>
                         </div>
                       </div>
                     </td>

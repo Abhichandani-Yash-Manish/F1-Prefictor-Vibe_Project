@@ -4,6 +4,7 @@ import { createBrowserClient } from "@supabase/ssr";
 import { config } from "../../lib/config";
 import { useRouter } from "next/navigation";
 import { DRIVERS_2026 } from "../lib/drivers";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 // Use centralized driver list (no placeholder needed for admin selects)
 const DRIVERS = DRIVERS_2026;
@@ -193,24 +194,27 @@ export default function AdminPage() {
     </div>
   );
 
-  if (checkingAuth) return <div className="min-h-screen bg-black flex items-center justify-center text-red-500 font-orbitron text-2xl animate-pulse">VERIFYING CREDENTIALS...</div>;
+  if (checkingAuth) return <LoadingSpinner message="Verifying Credentials..." />;
 
   if (!isAdmin) return null; 
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white p-6 md:p-12 font-sans selection:bg-red-500 selection:text-white">
+    <div className="min-h-screen bg-[var(--bg-void)] text-white pt-24 pb-16 px-6">
+        {/* Racing stripe */}
+        <div className="fixed top-0 left-0 w-2 h-full bg-gradient-to-b from-[var(--f1-red)] via-[var(--f1-red)]/50 to-transparent" />
         
-        <div className="max-w-7xl mx-auto border-b-4 border-red-600 pb-8 mb-12 flex justify-between items-end">
+        <div className="max-w-6xl mx-auto border-b border-[var(--f1-red)]/50 pb-10 mb-12 flex flex-col md:flex-row justify-between md:items-end gap-6">
             <div>
-                <h1 className="text-5xl md:text-7xl font-black font-orbitron text-white tracking-tighter mb-2">
-                    ADMIN <span className="text-red-600">CONTROL</span>
+                <span className="badge badge-red mb-4">Restricted</span>
+                <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight mb-2">
+                    ADMIN <span className="text-[var(--f1-red)]">CONTROL</span>
                 </h1>
-                <p className="text-gray-500 text-xl tracking-[0.3em] font-light uppercase">
+                <p className="text-[var(--text-muted)]">
                     Race Settlement System
                 </p>
             </div>
-            <div className="bg-red-900/20 border border-red-500 text-red-500 px-4 py-1 rounded text-xs font-bold uppercase tracking-widest animate-pulse">
-                Authorized Access
+            <div className="px-4 py-2 rounded-xl bg-[var(--f1-red-dim)] border border-[var(--f1-red)]/30 text-[var(--f1-red)] text-xs font-bold uppercase tracking-widest">
+                ⚡ Authorized Access
             </div>
         </div>
 

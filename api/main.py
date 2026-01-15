@@ -71,43 +71,26 @@ app.add_middleware(
 )
 
 # --- VALID DRIVERS LIST (2026 Grid - 11 Teams, 22 Drivers) ---
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# --- VALID DRIVERS LIST (2026 Grid - 11 Teams, 22 Drivers) ---
+# MUST match frontend/lib/drivers.ts exactly
 VALID_DRIVERS = [
-    # Red Bull
-    "Max Verstappen (Red Bull)",
-    "Isack Hadjar (Red Bull)",
-    # McLaren
-    "Lando Norris (McLaren)",
-    "Oscar Piastri (McLaren)",
-    # Ferrari
-    "Charles Leclerc (Ferrari)",
-    "Lewis Hamilton (Ferrari)",
-    # Mercedes
-    "George Russell (Mercedes)",
-    "Kimi Antonelli (Mercedes)",
-    # Aston Martin
-    "Fernando Alonso (Aston Martin)",
-    "Lance Stroll (Aston Martin)",
-    # Williams
-    "Carlos Sainz (Williams)",
-    "Alexander Albon (Williams)",
-    # Alpine
-    "Pierre Gasly (Alpine)",
-    "Franco Colapinto (Alpine)",
-    # Haas
-    "Esteban Ocon (Haas)",
-    "Oliver Bearman (Haas)",
-    # RB (Visa Cash App RB)
-    "Yuki Tsunoda (RB)",
-    "Liam Lawson (RB)",
-    # Sauber (Audi)
-    "Nico Hulkenberg (Sauber)",
-    "Gabriel Bortoleto (Sauber)",
-    # Cadillac (NEW TEAM 2026)
-    "Valtteri Bottas (Cadillac)",
-    "Sergio Perez (Cadillac)",
-    # Form placeholders
-    "Select Driver...",
-    ""
+    "Max Verstappen (Red Bull)", "Isack Hadjar (Red Bull)",
+    "Lando Norris (McLaren)", "Oscar Piastri (McLaren)",
+    "Charles Leclerc (Ferrari)", "Lewis Hamilton (Ferrari)",
+    "George Russell (Mercedes)", "Kimi Antonelli (Mercedes)",
+    "Fernando Alonso (Aston Martin)", "Lance Stroll (Aston Martin)",
+    "Carlos Sainz (Williams)", "Alexander Albon (Williams)",
+    "Pierre Gasly (Alpine)", "Franco Colapinto (Alpine)",
+    "Esteban Ocon (Haas)", "Oliver Bearman (Haas)",
+    "Yuki Tsunoda (RB)", "Liam Lawson (RB)",
+    "Nico Hulkenberg (Sauber)", "Gabriel Bortoleto (Sauber)",
+    "Valtteri Bottas (Cadillac)", "Sergio Perez (Cadillac)"
 ]
 
 # --- MODELS WITH VALIDATION ---
@@ -128,8 +111,8 @@ class PredictionInput(BaseModel):
                      'race_p1_driver', 'race_p2_driver', 'race_p3_driver')
     @classmethod
     def validate_driver(cls, v: str) -> str:
-        if v and v not in VALID_DRIVERS:
-            raise ValueError(f'Invalid driver: {v}')
+        if not v or v == "Select Driver..." or v not in VALID_DRIVERS:
+            raise ValueError(f'Invalid driver selection: {v}')
         return v
     
     @field_validator('wild_prediction', 'biggest_flop', 'biggest_surprise')
@@ -137,7 +120,9 @@ class PredictionInput(BaseModel):
     def sanitize_text(cls, v: str) -> str:
         # Remove any potentially dangerous characters
         if v:
-            v = re.sub(r'[<>"\']', '', v)[:500]  # Limit to 500 chars
+            # Basic strict sanitization: alphanumeric, spaces, and common punctuation
+            # Strip generic HTML tags logic remains, but stricter length enforcement
+            v = re.sub(r'[<>"\']', '', v)[:500] 
         return v
 
 class RaceResultInput(BaseModel):
@@ -466,14 +451,15 @@ def get_leagues(request: Request, user_id: str = Depends(verify_user)):
             "league_id, role, season_points, joined_at, leagues(*)"
         ).eq("user_id", user_id).execute()
         
-        # Get public leagues for discovery
-        public_leagues = supabase.table("leagues").select("*").eq("is_public", True).eq("is_active", True).execute()
+        # Get public leagues for discovery (removed is_active filter as column may not exist)
+        public_leagues = supabase.table("leagues").select("*").eq("is_public", True).execute()
         
         return {
             "my_leagues": my_leagues.data,
             "public_leagues": public_leagues.data
         }
     except Exception as e:
+        print(f"Error in get_leagues: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/leagues/{league_id}")

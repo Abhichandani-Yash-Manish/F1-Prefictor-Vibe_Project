@@ -1,5 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
+import LoadingSpinner from "../components/LoadingSpinner";
+import GlassCard from "../components/ui/GlassCard";
 
 export default function StandingsPage() {
   const [driverStandings, setDriverStandings] = useState<any[]>([]);
@@ -10,7 +12,6 @@ export default function StandingsPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch Drivers
         const resDrivers = await fetch("https://api.jolpi.ca/ergast/f1/current/driverStandings.json");
         const dataDrivers = await resDrivers.json();
         const driversList = dataDrivers?.MRData?.StandingsTable?.StandingsLists;
@@ -18,7 +19,6 @@ export default function StandingsPage() {
           setDriverStandings(driversList[0].DriverStandings);
         }
 
-        // Fetch Constructors
         const resTeams = await fetch("https://api.jolpi.ca/ergast/f1/current/constructorStandings.json");
         const dataTeams = await resTeams.json();
         const teamsList = dataTeams?.MRData?.StandingsTable?.StandingsLists;
@@ -35,15 +35,17 @@ export default function StandingsPage() {
     fetchData();
   }, []);
 
-  if (loading) return <div className="min-h-screen bg-black flex items-center justify-center text-white font-orbitron animate-pulse text-xl tracking-widest">FETCHING FIA TELEMETRY...</div>;
+  if (loading) {
+    return <LoadingSpinner message="Loading Standings..." />;
+  }
 
-  // Show message if no data available (e.g., before season starts)
   if (driverStandings.length === 0 && teamStandings.length === 0) {
     return (
-      <div className="min-h-screen bg-[#050505] flex flex-col items-center justify-center text-white font-orbitron">
-        <h2 className="text-2xl mb-4">Standings Not Available</h2>
-        <p className="text-gray-500 text-center max-w-md">
-          The 2026 F1 season has not started yet. Standings will appear once the first race is completed!
+      <div className="min-h-screen bg-[var(--bg-void)] flex flex-col items-center justify-center pt-24">
+        <div className="text-5xl mb-6 opacity-40">🏁</div>
+        <h2 className="text-2xl font-bold text-white mb-3">Standings Not Available</h2>
+        <p className="text-[var(--text-muted)] text-center max-w-md">
+          The 2026 F1 season hasn't started yet. Standings will appear after the first race.
         </p>
       </div>
     );
@@ -54,127 +56,137 @@ export default function StandingsPage() {
   const rest = currentData.slice(3);
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white p-6 md:p-12 font-sans selection:bg-red-500 selection:text-white">
-      
-      {/* HEADER */}
-      <div className="max-w-7xl mx-auto mb-16 text-center border-b-4 border-blue-600 pb-10 bg-gradient-to-b from-gray-900/50 to-transparent pt-10 rounded-t-3xl">
-        <h1 className="text-5xl md:text-8xl font-black font-orbitron text-white tracking-tighter mb-4 drop-shadow-[0_0_30px_rgba(37,99,235,0.5)]">
-            {view === "drivers" ? "DRIVER" : "TEAM"} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-blue-800">STANDINGS</span>
-        </h1>
+    <div className="min-h-screen bg-[var(--bg-void)] pt-24 pb-16">
+      <div className="max-w-6xl mx-auto px-6">
         
-        {/* TOGGLE SWITCH */}
-        <div className="flex justify-center mt-8">
-            <div className="bg-gray-900 p-1 rounded-full flex border border-gray-700 shadow-lg">
-                <button 
-                    onClick={() => setView("drivers")}
-                    className={`px-8 py-3 rounded-full font-black uppercase text-sm transition-all duration-300 font-orbitron tracking-wider ${view === "drivers" ? "bg-blue-600 text-white shadow-[0_0_20px_rgba(37,99,235,0.5)]" : "text-gray-500 hover:text-white"}`}
-                >
-                    Drivers
-                </button>
-                <button 
-                    onClick={() => setView("teams")}
-                    className={`px-8 py-3 rounded-full font-black uppercase text-sm transition-all duration-300 font-orbitron tracking-wider ${view === "teams" ? "bg-red-600 text-white shadow-[0_0_20px_rgba(220,38,38,0.5)]" : "text-gray-500 hover:text-white"}`}
-                >
-                    Constructors
-                </button>
-            </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto">
-        
-        {/* TOP 3 PODIUM DISPLAY */}
-        <div className="flex flex-col md:flex-row justify-center items-end gap-6 mb-20 px-4">
-            {/* 2nd Place */}
-            {top3[1] && (
-                <div className="flex-1 bg-[#121418] border-t-4 border-gray-400 rounded-xl p-8 text-center order-2 md:order-1 transform hover:-translate-y-2 transition duration-300 relative shadow-2xl">
-                    <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 bg-gray-400 rounded-full flex items-center justify-center border-4 border-[#0B0C10] font-black text-xl text-black">2</div>
-                    <div className="text-gray-500 text-xs font-bold uppercase tracking-widest mb-4 mt-2">P2</div>
-                    <div className="text-3xl font-black font-orbitron text-white truncate">
-                        {view === "drivers" ? top3[1].Driver.familyName.toUpperCase() : top3[1].Constructor.name.toUpperCase()}
-                    </div>
-                    {view === "drivers" && <div className="text-gray-500 text-sm font-bold uppercase mt-1">{top3[1].Constructors[0].name}</div>}
-                    <div className="text-6xl font-mono font-black text-gray-300 mt-4 tracking-tighter">{top3[1].points}</div>
-                </div>
-            )}
-
-            {/* 1st Place */}
-            {top3[0] && (
-                <div className="flex-[1.2] bg-gradient-to-b from-[#0a101f] to-[#0a0a0a] border-t-4 border-blue-600 rounded-xl p-12 text-center order-1 md:order-2 shadow-[0_0_60px_rgba(37,99,235,0.2)] z-10 transform scale-105 relative">
-                    <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-20 h-20 bg-yellow-500 rounded-full flex items-center justify-center border-8 border-[#0B0C10] text-4xl shadow-[0_0_30px_rgba(234,179,8,0.6)]">🏆</div>
-                    <div className="text-blue-500 text-sm font-bold uppercase tracking-[0.2em] mb-4 mt-4 animate-pulse">Current Leader</div>
-                    <div className="text-4xl md:text-5xl font-black font-orbitron text-white truncate drop-shadow-md">
-                        {view === "drivers" ? top3[0].Driver.familyName.toUpperCase() : top3[0].Constructor.name.toUpperCase()}
-                    </div>
-                    {view === "drivers" && <div className="text-gray-400 text-sm font-bold uppercase mt-2">{top3[0].Constructors[0].name}</div>}
-                    <div className="text-8xl font-mono font-black text-yellow-400 mt-6 drop-shadow-lg tracking-tighter">{top3[0].points}</div>
-                </div>
-            )}
-
-            {/* 3rd Place */}
-            {top3[2] && (
-                <div className="flex-1 bg-[#121418] border-t-4 border-orange-700 rounded-xl p-8 text-center order-3 md:order-3 transform hover:-translate-y-2 transition duration-300 relative shadow-2xl">
-                    <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 bg-orange-700 rounded-full flex items-center justify-center border-4 border-[#0B0C10] font-black text-xl text-white">3</div>
-                    <div className="text-gray-500 text-xs font-bold uppercase tracking-widest mb-4 mt-2">P3</div>
-                    <div className="text-3xl font-black font-orbitron text-white truncate">
-                        {view === "drivers" ? top3[2].Driver.familyName.toUpperCase() : top3[2].Constructor.name.toUpperCase()}
-                    </div>
-                    {view === "drivers" && <div className="text-gray-500 text-sm font-bold uppercase mt-1">{top3[2].Constructors[0].name}</div>}
-                    <div className="text-6xl font-mono font-black text-orange-500 mt-4 tracking-tighter">{top3[2].points}</div>
-                </div>
-            )}
+        {/* Header */}
+        <div className="text-center mb-12">
+          <span className="badge badge-cyan mb-4">Live Data</span>
+          <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-4">
+            {view === "drivers" ? "Driver" : "Constructor"} <span className="text-gradient-gold">Standings</span>
+          </h1>
+          
+          {/* Toggle */}
+          <div className="inline-flex bg-[var(--bg-onyx)] p-1 rounded-xl border border-[var(--glass-border)] mt-6">
+            <button 
+              onClick={() => setView("drivers")}
+              className={`px-6 py-3 rounded-lg font-medium text-sm transition-all ${
+                view === "drivers" 
+                  ? "bg-[var(--accent-cyan)] text-black" 
+                  : "text-[var(--text-muted)] hover:text-white"
+              }`}
+            >
+              Drivers
+            </button>
+            <button 
+              onClick={() => setView("teams")}
+              className={`px-6 py-3 rounded-lg font-medium text-sm transition-all ${
+                view === "teams" 
+                  ? "bg-[var(--f1-red)] text-white" 
+                  : "text-[var(--text-muted)] hover:text-white"
+              }`}
+            >
+              Constructors
+            </button>
+          </div>
         </div>
 
-        {/* FULL LIST */}
-        <div className="bg-[#121418] rounded-2xl border border-gray-800 overflow-hidden shadow-2xl">
-            <table className="w-full text-left border-collapse">
-                <thead>
-                    <tr className="bg-black text-gray-500 text-xs uppercase tracking-[0.2em] font-bold font-orbitron h-16">
-                        <th className="p-6 w-24 text-center border-b border-gray-800">Pos</th>
-                        <th className="p-6 border-b border-gray-800">{view === "drivers" ? "Driver" : "Team"}</th>
-                        {view === "drivers" && <th className="p-6 hidden md:table-cell border-b border-gray-800">Constructor</th>}
-                        <th className="p-6 text-center border-b border-gray-800">Wins</th>
-                        <th className="p-6 text-right border-b border-gray-800 text-blue-500">Points</th>
-                    </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-800/50">
-                    {rest.map((item: any) => (
-                        <tr key={item.position} className="hover:bg-white/[0.03] transition-colors group h-20">
-                            <td className="p-6 text-center font-mono text-2xl font-bold text-gray-600 group-hover:text-white transition italic">
-                                {item.position}
-                            </td>
-                            <td className="p-6">
-                                <div className="flex items-center gap-4">
-                                    <div className="w-1 h-8 bg-gray-700 group-hover:bg-white transition-colors"></div>
-                                    <div>
-                                        <span className="font-black text-xl font-orbitron tracking-wide text-white block">
-                                            {view === "drivers" ? item.Driver.familyName.toUpperCase() : item.Constructor.name.toUpperCase()}
-                                        </span>
-                                        {view === "drivers" && (
-                                            <span className="text-xs text-gray-500 uppercase tracking-widest">{item.Driver.givenName}</span>
-                                        )}
-                                    </div>
-                                </div>
-                            </td>
-                            {view === "drivers" && (
-                                <td className="p-6 hidden md:table-cell text-gray-400 font-bold uppercase tracking-wider text-sm">
-                                    {item.Constructors[0].name}
-                                </td>
-                            )}
-                            <td className="p-6 text-center font-mono text-gray-500 group-hover:text-white">
-                                {item.wins}
-                            </td>
-                            <td className="p-6 text-right">
-                                <span className="font-mono text-3xl font-black text-white group-hover:text-blue-500 transition drop-shadow-lg tracking-tighter">
-                                    {item.points}
-                                </span>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+        {/* Podium */}
+        <div className="flex flex-col md:flex-row justify-center items-end gap-4 mb-16 px-4">
+          
+          {/* P2 */}
+          {top3[1] && (
+            <GlassCard className="flex-1 p-6 md:p-8 text-center order-2 md:order-1 relative group hover:bg-[var(--bg-surface)]">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center text-black font-bold border-4 border-[var(--bg-void)]">
+                2
+              </div>
+              <div className="text-[var(--text-subtle)] text-xs font-medium uppercase tracking-wider mt-4 mb-3">Second</div>
+              <div className="text-2xl md:text-3xl font-bold text-white mb-1 group-hover:text-[var(--accent-gold)] transition-colors">
+                {view === "drivers" ? top3[1].Driver.familyName.toUpperCase() : top3[1].Constructor.name.toUpperCase()}
+              </div>
+              {view === "drivers" && (
+                <div className="text-sm text-[var(--text-muted)] mb-4">{top3[1].Constructors[0].name}</div>
+              )}
+              <div className="text-4xl md:text-5xl font-bold text-gray-300 font-mono">{top3[1].points}</div>
+            </GlassCard>
+          )}
+
+          {/* P1 */}
+          {top3[0] && (
+            <GlassCard variant="gold" className="flex-[1.2] p-8 md:p-10 text-center order-1 md:order-2 relative z-10 scale-105 group">
+              <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center text-2xl border-4 border-[var(--bg-void)] shadow-[var(--shadow-glow-gold)]">
+                🏆
+              </div>
+              <div className="text-[var(--accent-gold)] text-xs font-semibold uppercase tracking-[0.2em] mt-6 mb-3 animate-pulse">Championship Leader</div>
+              <div className="text-3xl md:text-4xl font-bold text-white mb-1 group-hover:text-[var(--accent-gold)] transition-colors">
+                {view === "drivers" ? top3[0].Driver.familyName.toUpperCase() : top3[0].Constructor.name.toUpperCase()}
+              </div>
+              {view === "drivers" && (
+                <div className="text-sm text-[var(--text-muted)] mb-4">{top3[0].Constructors[0].name}</div>
+              )}
+              <div className="text-5xl md:text-7xl font-bold text-[var(--accent-gold)] font-mono text-glow-gold">{top3[0].points}</div>
+            </GlassCard>
+          )}
+
+          {/* P3 */}
+          {top3[2] && (
+            <GlassCard className="flex-1 p-6 md:p-8 text-center order-3 relative group hover:bg-[var(--bg-surface)]">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-gradient-to-br from-orange-600 to-orange-700 flex items-center justify-center text-white font-bold border-4 border-[var(--bg-void)]">
+                3
+              </div>
+              <div className="text-[var(--text-subtle)] text-xs font-medium uppercase tracking-wider mt-4 mb-3">Third</div>
+              <div className="text-2xl md:text-3xl font-bold text-white mb-1 group-hover:text-[var(--accent-gold)] transition-colors">
+                {view === "drivers" ? top3[2].Driver.familyName.toUpperCase() : top3[2].Constructor.name.toUpperCase()}
+              </div>
+              {view === "drivers" && (
+                <div className="text-sm text-[var(--text-muted)] mb-4">{top3[2].Constructors[0].name}</div>
+              )}
+              <div className="text-4xl md:text-5xl font-bold text-orange-500 font-mono">{top3[2].points}</div>
+            </GlassCard>
+          )}
         </div>
 
+        {/* Full Table */}
+        <GlassCard className="overflow-hidden">
+          <table className="w-full">
+            <thead>
+              <tr className="bg-[var(--bg-carbon)] text-[var(--text-muted)] text-xs uppercase tracking-wider">
+                <th className="p-5 text-center border-b border-[var(--glass-border)]">Pos</th>
+                <th className="p-5 text-left border-b border-[var(--glass-border)]">{view === "drivers" ? "Driver" : "Team"}</th>
+                {view === "drivers" && <th className="p-5 text-left hidden md:table-cell border-b border-[var(--glass-border)]">Team</th>}
+                <th className="p-5 text-center border-b border-[var(--glass-border)]">Wins</th>
+                <th className="p-5 text-right border-b border-[var(--glass-border)]">Points</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rest.map((item: any) => (
+                <tr key={item.position} className="border-b border-[var(--glass-border)] hover:bg-[var(--bg-graphite)] transition-colors group">
+                  <td className="p-5 text-center font-mono text-xl font-bold text-[var(--text-subtle)] group-hover:text-white">
+                    {item.position}
+                  </td>
+                  <td className="p-5">
+                    <div className="flex items-center gap-3">
+                      <div className="w-1 h-6 bg-[var(--glass-border)] group-hover:bg-[var(--accent-gold)] transition-colors rounded-full" />
+                      <div>
+                        <span className="font-bold text-white block">{view === "drivers" ? item.Driver.familyName.toUpperCase() : item.Constructor.name.toUpperCase()}</span>
+                        {view === "drivers" && (
+                          <span className="text-xs text-[var(--text-muted)]">{item.Driver.givenName}</span>
+                        )}
+                      </div>
+                    </div>
+                  </td>
+                  {view === "drivers" && (
+                    <td className="p-5 hidden md:table-cell text-[var(--text-muted)] text-sm">{item.Constructors[0].name}</td>
+                  )}
+                  <td className="p-5 text-center font-mono text-[var(--text-muted)] group-hover:text-white">{item.wins}</td>
+                  <td className="p-5 text-right">
+                    <span className="font-mono text-2xl font-bold text-white group-hover:text-[var(--accent-cyan)]">{item.points}</span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </GlassCard>
       </div>
     </div>
   );

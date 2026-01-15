@@ -3,10 +3,8 @@ import { useState } from "react";
 import { createBrowserClient } from "@supabase/ssr";
 import { config } from "../../lib/config";
 import { DRIVERS_WITH_PLACEHOLDER } from "../lib/drivers";
-
 import ConfidenceMeter from "./ConfidenceMeter";
 
-// Use centralized driver list
 const DRIVERS = DRIVERS_WITH_PLACEHOLDER;
 
 export default function PredictionForm({ raceId, onSuccess }: { raceId: number, onSuccess?: () => void }) {
@@ -30,7 +28,6 @@ export default function PredictionForm({ raceId, onSuccess }: { raceId: number, 
   const handleSubmit = async () => {
     setLoading(true);
     
-    // 1. Check Login
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
       alert("Please log in first!");
@@ -38,14 +35,12 @@ export default function PredictionForm({ raceId, onSuccess }: { raceId: number, 
       return;
     }
 
-    // 2. Validate
     if (formData.quali_p1 === "" || formData.race_p1 === "") {
         alert("Please fill in at least the P1 predictions!");
         setLoading(false);
         return;
     }
 
-    // 3. Send to Python Backend
     const response = await fetch(`${config.apiUrl}/predict`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -73,7 +68,7 @@ export default function PredictionForm({ raceId, onSuccess }: { raceId: number, 
     } else {
       const errorData = await response.json();
       if (errorData.detail && errorData.detail.includes("23505")) {
-        alert("⚠️ You have already submitted a prediction for this race! You cannot vote twice.");
+        alert("⚠️ You have already submitted a prediction for this race!");
       } else {
         alert("❌ Error: " + (errorData.detail || "Failed to save"));
       }
@@ -81,139 +76,148 @@ export default function PredictionForm({ raceId, onSuccess }: { raceId: number, 
     setLoading(false);
   };
 
-  const DriverSelect = ({ label, value, onChange, position }: any) => (
-    <div className="mb-2">
-      <label className="block text-xs font-bold text-gray-500 uppercase mb-1">{label}</label>
+  const DriverSelect = ({ label, value, onChange, position, highlight }: any) => (
+    <div>
+      <label className="block text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-[0.08em] mb-2">
+        {label}
+      </label>
       <div className="relative">
         <select 
-            className="w-full p-3 border border-gray-700 rounded bg-[#121418] text-white focus:border-red-500 outline-none appearance-none" 
-            value={value} 
-            onChange={(e) => onChange(e.target.value)}
+          className={`w-full px-4 py-3.5 pr-10 rounded-xl bg-[var(--bg-onyx)] border transition-all appearance-none cursor-pointer ${
+            highlight 
+              ? 'border-[var(--accent-gold)]/50 focus:border-[var(--accent-gold)]' 
+              : 'border-[var(--glass-border)] focus:border-[var(--accent-cyan)]'
+          }`}
+          value={value} 
+          onChange={(e) => onChange(e.target.value)}
         >
-            {DRIVERS.map(driver => (
-                <option key={driver} value={driver}>{driver}</option>
-            ))}
+          {DRIVERS.map(driver => (
+            <option key={driver} value={driver}>{driver}</option>
+          ))}
         </select>
-        <div className="absolute right-3 top-3.5 pointer-events-none text-gray-500 text-xs">▼</div>
+        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-[var(--text-subtle)]">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
       </div>
       
-      {/* Confidence Meter Integration */}
       {value && value !== "" && value !== "Select Driver..." && (
-        <ConfidenceMeter 
-          raceId={raceId} 
-          selectedDriver={value} 
-          position={position} 
-        />
+        <div className="mt-3">
+          <ConfidenceMeter raceId={raceId} selectedDriver={value} position={position} />
+        </div>
       )}
     </div>
   );
 
   return (
-    <div className="mt-6 space-y-6 font-sans">
+    <div className="space-y-8">
       
-      {/* SECTION 1: QUALIFYING */}
-      <div className="bg-[#1F2833] p-6 rounded-xl border-l-4 border-red-600 shadow-lg">
-        <div className="flex items-center gap-2 mb-4">
-            <span className="text-xl">⏱️</span>
-            <h3 className="font-black text-lg text-white font-orbitron tracking-wide">QUALIFYING TOP 3</h3>
+      {/* QUALIFYING SECTION */}
+      <div className="telemetry-panel p-6 md:p-8">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-10 h-10 rounded-xl bg-[var(--f1-red-dim)] flex items-center justify-center">
+            <span className="text-lg">⏱️</span>
+          </div>
+          <div>
+            <h3 className="font-bold text-white text-lg">Qualifying Top 3</h3>
+            <p className="text-xs text-[var(--text-muted)]">Who will lock out the front row?</p>
+          </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <DriverSelect 
-              label="Pole Position" 
-              value={formData.quali_p1} 
-              onChange={(v: string) => handleChange('quali_p1', v)} 
-              position="quali_p1"
-            />
-            <DriverSelect 
-              label="P2" 
-              value={formData.quali_p2} 
-              onChange={(v: string) => handleChange('quali_p2', v)} 
-              position="quali_p2"
-            />
-            <DriverSelect 
-              label="P3" 
-              value={formData.quali_p3} 
-              onChange={(v: string) => handleChange('quali_p3', v)} 
-              position="quali_p3"
-            />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <DriverSelect label="Pole Position" value={formData.quali_p1} onChange={(v: string) => handleChange('quali_p1', v)} position="quali_p1" highlight />
+          <DriverSelect label="P2" value={formData.quali_p2} onChange={(v: string) => handleChange('quali_p2', v)} position="quali_p2" />
+          <DriverSelect label="P3" value={formData.quali_p3} onChange={(v: string) => handleChange('quali_p3', v)} position="quali_p3" />
         </div>
       </div>
 
-      {/* SECTION 2: RACE */}
-      <div className="bg-[#1F2833] p-6 rounded-xl border-l-4 border-white shadow-lg">
-        <div className="flex items-center gap-2 mb-4">
-            <span className="text-xl">🏁</span>
-            <h3 className="font-black text-lg text-white font-orbitron tracking-wide">RACE TOP 3</h3>
+      {/* RACE SECTION */}
+      <div className="telemetry-panel p-6 md:p-8">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-10 h-10 rounded-xl bg-[var(--accent-gold-dim)] flex items-center justify-center">
+            <span className="text-lg">🏁</span>
+          </div>
+          <div>
+            <h3 className="font-bold text-white text-lg">Race Top 3</h3>
+            <p className="text-xs text-[var(--text-muted)]">Predict the podium finishers</p>
+          </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <DriverSelect 
-              label="Winner" 
-              value={formData.race_p1} 
-              onChange={(v: string) => handleChange('race_p1', v)} 
-              position="race_p1"
-            />
-            <DriverSelect 
-              label="P2" 
-              value={formData.race_p2} 
-              onChange={(v: string) => handleChange('race_p2', v)} 
-              position="race_p2"
-            />
-            <DriverSelect 
-              label="P3" 
-              value={formData.race_p3} 
-              onChange={(v: string) => handleChange('race_p3', v)} 
-              position="race_p3"
-            />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <DriverSelect label="Winner" value={formData.race_p1} onChange={(v: string) => handleChange('race_p1', v)} position="race_p1" highlight />
+          <DriverSelect label="P2" value={formData.race_p2} onChange={(v: string) => handleChange('race_p2', v)} position="race_p2" />
+          <DriverSelect label="P3" value={formData.race_p3} onChange={(v: string) => handleChange('race_p3', v)} position="race_p3" />
         </div>
       </div>
 
-      {/* SECTION 3: BONUS */}
-      <div className="bg-[#1F2833] p-6 rounded-xl border-l-4 border-yellow-500 shadow-lg">
-        <div className="flex items-center gap-2 mb-4">
-            <span className="text-xl">✨</span>
-            <h3 className="font-black text-lg text-yellow-500 font-orbitron tracking-wide">BONUS PREDICTIONS</h3>
+      {/* BONUS SECTION */}
+      <div className="telemetry-panel p-6 md:p-8">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-10 h-10 rounded-xl bg-[var(--accent-cyan-dim)] flex items-center justify-center">
+            <span className="text-lg">✨</span>
+          </div>
+          <div>
+            <h3 className="font-bold text-[var(--accent-cyan)] text-lg">Bonus Predictions</h3>
+            <p className="text-xs text-[var(--text-muted)]">Earn extra points for sharp insights</p>
+          </div>
         </div>
         
-        <div className="space-y-4">
+        <div className="space-y-5">
+          <div>
+            <label className="block text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-[0.08em] mb-2">
+              🔥 Wild Prediction
+            </label>
+            <input 
+              type="text"
+              placeholder="Something probable but not obvious..."
+              className="w-full"
+              value={formData.wild} 
+              onChange={e => handleChange('wild', e.target.value)}
+            />
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
-                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">🔥 Wild Prediction (Probable but not obvious)</label>
-                <input 
-                    className="w-full p-3 border border-gray-700 rounded bg-[#121418] text-white focus:border-yellow-500 outline-none transition" 
-                    placeholder="e.g. Albon scores points..." 
-                    value={formData.wild} 
-                    onChange={e => handleChange('wild', e.target.value)}
-                />
+              <label className="block text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-[0.08em] mb-2">
+                📉 Biggest Flop
+              </label>
+              <input 
+                type="text"
+                placeholder="Driver or team that will underperform"
+                className="w-full"
+                value={formData.flop} 
+                onChange={e => handleChange('flop', e.target.value)}
+              />
             </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label className="block text-xs font-bold text-gray-500 uppercase mb-1">📉 Biggest Flop (Driver/Team)</label>
-                    <input 
-                        className="w-full p-3 border border-gray-700 rounded bg-[#121418] text-white focus:border-blue-500 outline-none transition" 
-                        placeholder="e.g. Aston Martin" 
-                        value={formData.flop} 
-                        onChange={e => handleChange('flop', e.target.value)}
-                    />
-                </div>
-                <div>
-                    <label className="block text-xs font-bold text-gray-500 uppercase mb-1">🚀 Biggest Surprise (Driver/Team)</label>
-                    <input 
-                        className="w-full p-3 border border-gray-700 rounded bg-[#121418] text-white focus:border-green-500 outline-none transition" 
-                        placeholder="e.g. Haas Podium" 
-                        value={formData.surprise} 
-                        onChange={e => handleChange('surprise', e.target.value)}
-                    />
-                </div>
+            <div>
+              <label className="block text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-[0.08em] mb-2">
+                🚀 Biggest Surprise
+              </label>
+              <input 
+                type="text"
+                placeholder="Driver or team that will overperform"
+                className="w-full"
+                value={formData.surprise} 
+                onChange={e => handleChange('surprise', e.target.value)}
+              />
             </div>
+          </div>
         </div>
       </div>
 
+      {/* SUBMIT BUTTON */}
       <button 
         onClick={handleSubmit}
         disabled={loading}
-        className="w-full bg-red-600 text-white font-black text-2xl py-4 rounded hover:bg-red-700 transition shadow-[0_0_20px_rgba(220,38,38,0.5)] transform hover:scale-[1.01] disabled:opacity-50 disabled:cursor-not-allowed font-orbitron tracking-widest skew-x-[-5deg]"
+        className="w-full btn-primary py-5 text-lg font-bold disabled:opacity-50 disabled:cursor-not-allowed group"
       >
-        <span className="skew-x-[5deg] inline-block">{loading ? "TRANSMITTING..." : "SUBMIT PREDICTIONS 📝"}</span>
+        <span className="group-hover:scale-105 transition-transform inline-flex items-center gap-2">
+          {loading ? "Transmitting..." : (
+            <>
+              <span>📡</span>
+              <span>Submit Predictions</span>
+            </>
+          )}
+        </span>
       </button>
     </div>
   );
