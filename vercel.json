@@ -1,8 +1,16 @@
 {
+  "buildCommand": "cd frontend && rm -rf node_modules && npm install && npm run build",
+  "outputDirectory": "frontend/.next",
+  "framework": "nextjs",
   "rewrites": [
     {
       "source": "/api/:path*",
       "destination": "/api/index.py"
     }
-  ]
+  ],
+  "functions": {
+    "api/**/*.py": {
+      "runtime": "python3.12"
+    }
+  }
 }
