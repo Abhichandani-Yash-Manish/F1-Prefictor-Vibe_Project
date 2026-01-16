@@ -1,0 +1,11 @@
+{
+  "name": "f1-predictor-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "cd frontend && npm install && npm run build && cd .. && rm -rf .next public && mv frontend/.next .next && cp -r frontend/public public"
+  },
+  "workspaces": [
+    "frontend"
+  ]
+}
