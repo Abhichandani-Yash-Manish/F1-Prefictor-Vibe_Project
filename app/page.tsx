@@ -42,6 +42,7 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // 1. Critical Data: Next Race (Supabase - Fast)
         const today = new Date().toISOString();
         
         const { data } = await supabase
@@ -54,6 +55,7 @@ export default function Home() {
         if (data && data.length > 0) {
           setNextRace(data[0]);
         } else {
+          // Fallback to first race of season if no next race
           const { data: allRaces } = await supabase
             .from("races")
             .select("*")
@@ -63,40 +65,55 @@ export default function Home() {
             setNextRace(allRaces[0]);
           }
         }
-
-        try {
-          const resResults = await fetch("https://api.jolpi.ca/ergast/f1/current/last/results.json");
-          const dataResults = await resResults.json();
-          if (dataResults.MRData.RaceTable.Races.length > 0) {
-            setLastResults(dataResults.MRData.RaceTable.Races[0].Results.slice(0, 3));
-          }
-        } catch (e) {}
-
-        try {
-          const resStandings = await fetch("https://api.jolpi.ca/ergast/f1/current/driverStandings.json");
-          const dataStandings = await resStandings.json();
-          if (dataStandings.MRData.StandingsTable.StandingsLists.length > 0) {
-            setTopDrivers(dataStandings.MRData.StandingsTable.StandingsLists[0].DriverStandings.slice(0, 5));
-          }
-        } catch (e) {}
-        
-        try {
-           const resUsers = await fetch(`${config.apiUrl}/standings`);
-           if (resUsers.ok) {
-             const dataUsers = await resUsers.json();
-             setUserStandings(dataUsers);
-           }
-        } catch(e) {}
-
       } catch (err) {
-        console.error("Error:", err);
+        console.error("Critical Data Error:", err);
       } finally {
+        // Show UI immediately after checking for race data
         setLoading(false);
       }
+
+      // 2. Secondary Data: Stats & Standings (Background - Parallel)
+      // These will populate as they arrive without blocking the UI
+      const fetchSecondaryData = async () => {
+        const fetchResults = async () => {
+            try {
+                const res = await fetch("https://api.jolpi.ca/ergast/f1/current/last/results.json");
+                const data = await res.json();
+                if (data.MRData.RaceTable.Races.length > 0) {
+                  setLastResults(data.MRData.RaceTable.Races[0].Results.slice(0, 3));
+                }
+            } catch (e) { console.error("Results Error", e); }
+        };
+
+        const fetchDrivers = async () => {
+            try {
+                const res = await fetch("https://api.jolpi.ca/ergast/f1/current/driverStandings.json");
+                const data = await res.json();
+                if (data.MRData.StandingsTable.StandingsLists.length > 0) {
+                  setTopDrivers(data.MRData.StandingsTable.StandingsLists[0].DriverStandings.slice(0, 5));
+                }
+            } catch (e) { console.error("Drivers Error", e); }
+        };
+
+        const fetchUserStandings = async () => {
+            try {
+               const res = await fetch(`${config.apiUrl}/standings`);
+               if (res.ok) {
+                 const data = await res.json();
+                 setUserStandings(data);
+               }
+            } catch (e) { console.error("User Standings Error", e); }
+        };
+
+        // Fire all in parallel
+        await Promise.allSettled([fetchResults(), fetchDrivers(), fetchUserStandings()]);
+      };
+
+      fetchSecondaryData();
     };
 
     fetchData();
-  }, []);
+  }, [supabase]);
 
   if (loading) return <LoadingSpinner message="Initializing Command Center..." />;
 
