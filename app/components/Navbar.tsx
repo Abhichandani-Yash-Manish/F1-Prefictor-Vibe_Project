@@ -27,12 +27,21 @@ export default function Navbar() {
       if (user) {
          const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single();
          setProfile(data);
+      } else {
+         setProfile(null);
       }
     };
     getUser();
     
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
         setUser(session?.user ?? null);
+        // Fetch profile for the new user or clear it on logout
+        if (session?.user) {
+          const { data } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
+          setProfile(data);
+        } else {
+          setProfile(null);
+        }
         if (event === 'SIGNED_OUT') router.refresh();
     });
 
