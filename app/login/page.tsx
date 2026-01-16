@@ -3,7 +3,7 @@ import { createBrowserClient } from "@supabase/ssr";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { TEAM_COLORS, TEAMS_2026 } from "../lib/drivers";
+import { TEAM_COLORS, ALL_DRIVERS_NAMES, DRIVERS_DATA_2026 } from "../lib/drivers";
 
 type AuthMode = "signin" | "signup" | "magic-link" | "forgot-password";
 
@@ -241,7 +241,7 @@ export default function LoginPage() {
                   <div className="flex gap-2 mb-4">
                     <select
                       value={favTeam}
-                      onChange={(e) => { setFavTeam(e.target.value); setFavDriver(""); clearMessage(); }}
+                      onChange={(e) => { setFavTeam(e.target.value); clearMessage(); }}
                       className="flex-1 bg-[var(--bg-onyx)] border border-[var(--glass-border)] rounded-lg p-3 text-white text-sm focus:outline-none focus:border-[var(--accent-gold)] appearance-none"
                     >
                       <option value="">Select Team...</option>
@@ -253,12 +253,11 @@ export default function LoginPage() {
                     <select
                       value={favDriver}
                       onChange={(e) => setFavDriver(e.target.value)}
-                      disabled={!favTeam}
-                      className="flex-1 bg-[var(--bg-onyx)] border border-[var(--glass-border)] rounded-lg p-3 text-white text-sm focus:outline-none focus:border-[var(--accent-gold)] appearance-none disabled:opacity-50"
+                      className="flex-1 bg-[var(--bg-onyx)] border border-[var(--glass-border)] rounded-lg p-3 text-white text-sm focus:outline-none focus:border-[var(--accent-gold)] appearance-none"
                     >
                       <option value="">Select Driver...</option>
-                      {favTeam && TEAMS_2026[favTeam]?.map(d => (
-                        <option key={d.driver} value={d.driver}>{d.driver} #{d.number}</option>
+                      {DRIVERS_DATA_2026.map(d => (
+                        <option key={d.name} value={d.name}>{d.name} #{d.number}</option>
                       ))}
                     </select>
                   </div>

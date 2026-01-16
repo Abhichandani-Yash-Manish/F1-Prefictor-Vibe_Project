@@ -5,7 +5,7 @@ import { useRouter, useParams } from "next/navigation";
 import GlassCard from "../../components/ui/GlassCard";
 import Badge from "../../components/ui/Badge";
 import LoadingSpinner from "../../components/LoadingSpinner";
-import { DRIVERS_2026, getDriverTeam, TEAM_COLORS, getDriverNumber, getDriverName, TEAMS_2026 } from "../../lib/drivers";
+import { DRIVERS_2026, getDriverTeam, TEAM_COLORS, getDriverNumber, getDriverName, TEAMS_2026, DRIVERS_DATA_2026 } from "../../lib/drivers";
 import F1Button from "../../components/ui/F1Button";
 
 import { Profile, UserAchievement, Prediction, LeagueMember, FriendRequest } from "../../lib/types";
@@ -275,7 +275,7 @@ export default function UserProfilePage() {
                                         <label className="block text-xs text-[var(--text-subtle)] mb-1">Favorite Team</label>
                                         <select
                                             value={editTeam}
-                                            onChange={(e) => { setEditTeam(e.target.value); setEditDriver(""); }}
+                                            onChange={(e) => setEditTeam(e.target.value)}
                                             className="w-full bg-[var(--bg-onyx)] border border-[var(--glass-border)] rounded-lg p-2 text-white text-sm appearance-none"
                                         >
                                             <option value="">Select...</option>
@@ -290,12 +290,12 @@ export default function UserProfilePage() {
                                         <select
                                             value={editDriver}
                                             onChange={(e) => setEditDriver(e.target.value)}
-                                            disabled={!editTeam}
+
                                             className="w-full bg-[var(--bg-onyx)] border border-[var(--glass-border)] rounded-lg p-2 text-white text-sm disabled:opacity-50 appearance-none"
                                         >
                                             <option value="">Select...</option>
-                                            {editTeam && TEAMS_2026[editTeam]?.map(d => (
-                                                <option key={d.driver} value={d.driver}>{d.driver}</option>
+                                            {DRIVERS_DATA_2026.map(d => (
+                                                <option key={d.name} value={d.name}>{d.name} #{d.number}</option>
                                             ))}
                                         </select>
                                     </div>

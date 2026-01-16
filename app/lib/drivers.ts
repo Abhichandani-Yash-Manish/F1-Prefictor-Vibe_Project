@@ -60,6 +60,9 @@ export const DRIVERS_DATA_2026: Driver[] = [
 // Simple driver list for dropdowns (format: "Name (Team)")
 export const DRIVERS_2026 = DRIVERS_DATA_2026.map(d => `${d.name} (${d.team})`);
 
+// All driver names only (for independent selection)
+export const ALL_DRIVERS_NAMES = DRIVERS_DATA_2026.map(d => d.name);
+
 // With placeholder option for forms
 export const DRIVERS_WITH_PLACEHOLDER = [
   "Select Driver...",
