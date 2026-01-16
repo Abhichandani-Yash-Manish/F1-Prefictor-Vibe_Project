@@ -1,7 +1,4 @@
 {
-  "installCommand": "cd frontend && rm -rf node_modules && npm install",
-  "buildCommand": "cd frontend && npm run build",
-  "outputDirectory": "frontend/.next",
   "rewrites": [
     {
       "source": "/api/:path*",
