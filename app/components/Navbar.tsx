@@ -80,30 +80,15 @@ export default function Navbar() {
           <div className="flex justify-between items-center h-16">
             
             {/* Left: Logo */}
-            <Link href="/" className="flex items-center gap-3 group">
-              {/* Circular Logo - Crisp & Sharp */}
-              <div className="relative w-12 h-12 rounded-full p-[2px] bg-gradient-to-br from-[var(--f1-red)] via-[var(--accent-gold)] to-[var(--f1-red)] group-hover:from-[var(--accent-gold)] group-hover:via-[var(--f1-red)] group-hover:to-[var(--accent-gold)] transition-all duration-500 shadow-lg group-hover:shadow-[0_0_20px_rgba(220,38,38,0.4)]">
-                <div className="w-full h-full rounded-full overflow-hidden bg-[#0a0a0c]">
-                  <Image 
-                    src="/logo.png" 
-                    alt="F1 Apex" 
-                    fill
-                    sizes="48px"
-                    className="object-cover scale-[1.8] object-center"
-                    priority
-                  />
-                </div>
-              </div>
-              
-              {/* Brand Text */}
-              <div className="flex flex-col">
-                <span className="text-xl font-black tracking-tight bg-gradient-to-r from-white via-white to-[var(--text-muted)] bg-clip-text text-transparent group-hover:from-[var(--f1-red)] group-hover:via-[var(--f1-red)] group-hover:to-[var(--accent-gold)] transition-all duration-300">
-                  F1 APEX
-                </span>
-                <span className="text-[10px] font-bold tracking-[0.15em] text-[var(--accent-gold)] uppercase">
-                  Predictions
-                </span>
-              </div>
+            <Link href="/" className="flex items-center group">
+              <Image 
+                src="/logo.png" 
+                alt="F1 Apex Predictions" 
+                width={160}
+                height={45}
+                className="object-contain transition-transform duration-300 group-hover:scale-105"
+                priority
+              />
             </Link>
 
             {/* Center: Navigation (Desktop) */}
