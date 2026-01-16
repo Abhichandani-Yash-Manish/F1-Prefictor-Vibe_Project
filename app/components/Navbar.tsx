@@ -81,19 +81,15 @@ export default function Navbar() {
             
             {/* Left: Logo */}
             <Link href="/" className="flex items-center gap-3 group">
-              {/* Circular Logo with Premium Ring */}
-              <div className="relative">
-                {/* Outer glow ring */}
-                <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-[var(--f1-red)] via-[var(--accent-gold)] to-[var(--f1-red)] opacity-50 blur-sm group-hover:opacity-80 group-hover:blur-md transition-all duration-500" />
-                
-                {/* Logo container */}
-                <div className="relative w-11 h-11 rounded-full overflow-hidden border-2 border-[var(--f1-red)]/60 group-hover:border-[var(--f1-red)] shadow-[0_0_20px_rgba(220,38,38,0.3)] group-hover:shadow-[0_0_30px_rgba(220,38,38,0.5)] transition-all duration-300">
+              {/* Circular Logo - Crisp & Sharp */}
+              <div className="relative w-12 h-12 rounded-full p-[2px] bg-gradient-to-br from-[var(--f1-red)] via-[var(--accent-gold)] to-[var(--f1-red)] group-hover:from-[var(--accent-gold)] group-hover:via-[var(--f1-red)] group-hover:to-[var(--accent-gold)] transition-all duration-500 shadow-lg group-hover:shadow-[0_0_20px_rgba(220,38,38,0.4)]">
+                <div className="w-full h-full rounded-full overflow-hidden bg-[#0a0a0c]">
                   <Image 
                     src="/logo.png" 
                     alt="F1 Apex" 
                     fill
-                    sizes="44px"
-                    className="object-cover scale-150"
+                    sizes="48px"
+                    className="object-cover scale-[1.8] object-center"
                     priority
                   />
                 </div>
@@ -101,10 +97,10 @@ export default function Navbar() {
               
               {/* Brand Text */}
               <div className="flex flex-col">
-                <span className="text-lg font-bold tracking-tight text-white group-hover:text-[var(--f1-red)] transition-colors duration-300">
+                <span className="text-xl font-black tracking-tight bg-gradient-to-r from-white via-white to-[var(--text-muted)] bg-clip-text text-transparent group-hover:from-[var(--f1-red)] group-hover:via-[var(--f1-red)] group-hover:to-[var(--accent-gold)] transition-all duration-300">
                   F1 APEX
                 </span>
-                <span className="text-[9px] font-semibold tracking-[0.2em] text-[var(--accent-gold)]/80 uppercase">
+                <span className="text-[10px] font-bold tracking-[0.15em] text-[var(--accent-gold)] uppercase">
                   Predictions
                 </span>
               </div>
