@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "cd frontend && rm -rf node_modules && npm install && npm run build && cd .. && rm -rf .next public && mv frontend/.next .next && cp -r frontend/public public"
-  },
-  "workspaces": [
-    "frontend"
-  ]
+    "build": "cd frontend && rm -rf node_modules package-lock.json && npm install && npm run build && cd .. && rm -rf .next public && mv frontend/.next .next && cp -r frontend/public public"
+  }
 }
