@@ -80,15 +80,28 @@ export default function Navbar() {
           <div className="flex justify-between items-center h-16">
             
             {/* Left: Logo */}
-            <Link href="/" className="flex items-center group">
-              <Image 
-                src="/logo.png" 
-                alt="F1 Apex Predictions" 
-                width={160}
-                height={45}
-                className="object-contain transition-transform duration-300 group-hover:scale-105"
-                priority
-              />
+            <Link href="/" className="flex items-center gap-3 group">
+              {/* Circular Logo */}
+              <div className="relative w-11 h-11 rounded-full overflow-hidden border-2 border-[var(--f1-red)]/50 group-hover:border-[var(--f1-red)] shadow-lg group-hover:shadow-[0_0_15px_rgba(220,38,38,0.4)] transition-all duration-300">
+                <Image 
+                  src="/logo.png" 
+                  alt="F1 Apex" 
+                  fill
+                  sizes="44px"
+                  className="object-cover"
+                  priority
+                />
+              </div>
+              
+              {/* Brand Text */}
+              <div className="flex flex-col">
+                <span className="text-lg font-bold tracking-tight text-white group-hover:text-[var(--accent-gold)] transition-colors duration-300">
+                  F1 APEX
+                </span>
+                <span className="text-[10px] font-medium tracking-[0.25em] text-[var(--text-muted)] uppercase">
+                  Predictions
+                </span>
+              </div>
             </Link>
 
             {/* Center: Navigation (Desktop) */}
