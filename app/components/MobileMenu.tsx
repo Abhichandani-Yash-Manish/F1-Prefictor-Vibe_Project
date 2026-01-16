@@ -8,10 +8,11 @@ interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
   user: any;
+  profile?: any;
   onLogout: () => void;
 }
 
-export default function MobileMenu({ isOpen, onClose, user, onLogout }: MobileMenuProps) {
+export default function MobileMenu({ isOpen, onClose, user, profile, onLogout }: MobileMenuProps) {
   // Prevent body scroll when open
   useEffect(() => {
     if (isOpen) {
@@ -24,13 +25,18 @@ export default function MobileMenu({ isOpen, onClose, user, onLogout }: MobileMe
     };
   }, [isOpen]);
 
-  const navLinks = [
+  const baseNavLinks = [
     { href: '/calendar', label: 'Calendar', icon: '📅', text: 'Race Schedule' },
     { href: '/leaderboard', label: 'Leaderboard', icon: '🏆', text: 'Global Rankings' },
     { href: '/standings', label: 'Standings', icon: '📊', text: 'F1 Championship' },
     { href: '/leagues', label: 'Leagues', icon: '👥', text: 'Join or Create' },
     { href: '/rivalries', label: 'Rivalries', icon: '⚔️', text: 'Head-to-Head' },
+    { href: '/friends', label: 'Friends', icon: '👋', text: 'Social Hub' },
   ];
+
+  const navLinks = profile?.is_admin 
+    ? [...baseNavLinks, { href: '/admin', label: 'Admin', icon: '⚡', text: 'Authorized Only' }]
+    : baseNavLinks;
 
   if (!isOpen) return null;
 

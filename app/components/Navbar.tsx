@@ -62,13 +62,18 @@ export default function Navbar() {
     router.refresh();
   };
 
-  const navLinks = [
+  const baseNavLinks = [
     { href: '/calendar', label: 'Calendar', icon: '📅' },
     { href: '/leaderboard', label: 'Leaderboard', icon: '🏆' },
     { href: '/standings', label: 'Standings', icon: '📊' },
     { href: '/leagues', label: 'Leagues', icon: '👥' },
     { href: '/rivalries', label: 'Rivalries', icon: '⚔️' },
+    { href: '/friends', label: 'Friends', icon: '👋' },
   ];
+
+  const navLinks = profile?.is_admin 
+    ? [...baseNavLinks, { href: '/admin', label: 'Admin', icon: '⚡' }]
+    : baseNavLinks;
 
   return (
     <>
@@ -105,10 +110,16 @@ export default function Navbar() {
                 <Link 
                   key={link.href}
                   href={link.href}
-                  className="px-5 py-1 text-sm font-medium text-[var(--text-secondary)] hover:text-white transition-colors relative group"
+                  className={`px-5 py-1 text-sm font-medium transition-colors relative group ${
+                    link.href === '/admin' 
+                      ? 'text-[var(--f1-red)] hover:text-red-400 font-bold tracking-wider' 
+                      : 'text-[var(--text-secondary)] hover:text-white'
+                  }`}
                 >
                   <span className="relative z-10">{link.label}</span>
-                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-[var(--f1-red)] group-hover:w-1/2 transition-all duration-300" />
+                  <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 transition-all duration-300 ${
+                    link.href === '/admin' ? 'bg-[var(--f1-red)] shadow-[0_0_10px_var(--f1-red)]' : 'bg-[var(--f1-red)]'
+                  } group-hover:w-1/2`} />
                 </Link>
               ))}
             </div>
@@ -163,6 +174,7 @@ export default function Navbar() {
         isOpen={isMobileMenuOpen} 
         onClose={() => setIsMobileMenuOpen(false)}
         user={user}
+        profile={profile}
         onLogout={handleLogout}
       />
     </>
