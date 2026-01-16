@@ -148,7 +148,12 @@ export default function UserProfilePage() {
             if (authError) throw authError;
         }
 
-        setProfile({ ...profile, username: editUsername, favorite_team: editTeam, favorite_driver: editDriver });
+        setProfile({ 
+            ...profile!, 
+            username: editUsername, 
+            favorite_team: editTeam, 
+            favorite_driver: editDriver 
+        } as Profile);
         setIsEditing(false);
         setNewPassword("");
         setMessage({ text: "Profile updated successfully!", type: 'success' });
@@ -198,7 +203,7 @@ export default function UserProfilePage() {
                         }}
                     >
                         <div className="w-full h-full rounded-full bg-[#0a0a0c] flex items-center justify-center text-5xl font-bold text-white relative overflow-hidden">
-                            {profile.username?.charAt(0).toUpperCase() || profile.email?.charAt(0).toUpperCase() || "R"}
+                            {profile.username?.charAt(0).toUpperCase() || "R"}
                             <div className="absolute inset-0 bg-gradient-to-tr from-transparent to-white/10" />
                         </div>
                     </div>
