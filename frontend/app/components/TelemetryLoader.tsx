@@ -41,7 +41,30 @@ export default function TelemetryLoader({ size = 'md', label = 'LOADING' }: Tele
         </span>
       )}
 
-
+      {/* Animation Styles */}
+      <style jsx>{`
+        @keyframes telemetry-bar {
+          0%, 100% { 
+            height: 30%; 
+            background-color: var(--accent-cyan);
+          }
+          25% { 
+            height: 100%; 
+            background-color: var(--success-green);
+          }
+          50% { 
+            height: 50%; 
+            background-color: var(--accent-cyan);
+          }
+          75% { 
+            height: 80%; 
+            background-color: var(--accent-lime);
+          }
+        }
+        .animate-telemetry-bar {
+          animation: telemetry-bar 1.5s ease-in-out infinite;
+        }
+      `}</style>
     </div>
   );
 }
@@ -69,7 +92,15 @@ export function RacingPulseLoader() {
         ANALYZING TELEMETRY...
       </span>
 
-
+      <style jsx>{`
+        @keyframes racing-pulse {
+          0% { transform: translateX(-200%); }
+          100% { transform: translateX(400%); }
+        }
+        .animate-racing-pulse {
+          animation: racing-pulse 1.5s ease-in-out infinite;
+        }
+      `}</style>
     </div>
   );
 }

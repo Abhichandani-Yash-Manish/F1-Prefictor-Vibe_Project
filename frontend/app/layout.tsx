@@ -1,7 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter, Orbitron, JetBrains_Mono, Titillium_Web, Roboto_Mono } from "next/font/google";
-import Script from "next/script";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { TeamRadioProvider } from "./components/TeamRadioToast";
@@ -66,12 +65,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Google AdSense Script */}
+        {/* Google AdSense Script - using standard script tag for Next.js 16 compatibility */}
         {process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID && (
-          <Script
+          <script
+            async
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
             crossOrigin="anonymous"
-            strategy="afterInteractive"
           />
         )}
       </head>

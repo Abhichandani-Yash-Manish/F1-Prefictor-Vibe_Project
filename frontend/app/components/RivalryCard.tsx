@@ -1,5 +1,5 @@
 "use client";
-import { useState, MouseEvent } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { getDriverName, getDriverNumber, TEAM_COLORS, getDriverTeam } from "../lib/drivers";
 
@@ -92,7 +92,7 @@ export default function RivalryCard({ player1, player2, races, onChallenge }: Ri
           {/* PLAYER 1 (LEFT) */}
           <div className="flex-1 text-left relative">
             {player1.id ? (
-              <Link href={`/profile/${player1.id}`} className="relative z-10 block hover:scale-105 transition-transform" onClick={(e: MouseEvent) => e.stopPropagation()}>
+              <Link href={`/profile/${player1.id}`} className="relative z-10 block hover:scale-105 transition-transform" onClick={(e) => e.stopPropagation()}>
                 <div 
                   className="w-20 h-20 mb-4 rounded-2xl flex items-center justify-center border-b-4 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]"
                   style={{ 
@@ -150,7 +150,7 @@ export default function RivalryCard({ player1, player2, races, onChallenge }: Ri
           {/* PLAYER 2 (RIGHT) */}
            <div className="flex-1 text-right relative">
             {p2.id && !isSolo ? (
-                <Link href={`/profile/${p2.id}`} className="relative z-10 flex flex-col items-end hover:scale-105 transition-transform" onClick={(e: MouseEvent) => e.stopPropagation()}>
+                <Link href={`/profile/${p2.id}`} className="relative z-10 flex flex-col items-end hover:scale-105 transition-transform" onClick={(e) => e.stopPropagation()}>
                     <div 
                         className="w-20 h-20 mb-4 rounded-2xl flex items-center justify-center border-b-4 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]"
                         style={{ 
