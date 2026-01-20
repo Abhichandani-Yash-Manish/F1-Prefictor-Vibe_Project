@@ -42,20 +42,20 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="text-xs text-gray-500 uppercase tracking-widest mb-1">Email</p>
-                  <a href="mailto:contact@f1apex.com" className="text-white hover:text-red-500 transition font-mono">
-                    contact@f1apex.com
+                  <a href="mailto:yashraj2507@gmail.com" className="text-white hover:text-red-500 transition font-mono">
+                    yashraj2507@gmail.com
                   </a>
                 </div>
               </div>
 
               <div className="flex items-center gap-4 p-4 bg-[#1F2833] rounded-lg border border-gray-700">
-                <div className="w-12 h-12 bg-blue-600/20 rounded-full flex items-center justify-center text-2xl">
-                  🐦
+                <div className="w-12 h-12 bg-pink-600/20 rounded-full flex items-center justify-center text-2xl">
+                  📸
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500 uppercase tracking-widest mb-1">Twitter/X</p>
-                  <a href="https://twitter.com/f1apex" className="text-white hover:text-red-500 transition font-mono" target="_blank" rel="noopener noreferrer">
-                    @f1apex
+                  <p className="text-xs text-gray-500 uppercase tracking-widest mb-1">Instagram</p>
+                  <a href="https://www.instagram.com/yash.it.is._/" className="text-white hover:text-red-500 transition font-mono" target="_blank" rel="noopener noreferrer">
+                    @yash.it.is._
                   </a>
                 </div>
               </div>

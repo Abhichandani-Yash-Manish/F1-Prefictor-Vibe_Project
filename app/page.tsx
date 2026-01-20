@@ -150,11 +150,18 @@ export default function Home() {
             {/* Left Content */}
             <div className="max-w-3xl animate-fade-in-up relative z-20">
               
-              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8 hover:bg-white/10 transition-colors cursor-default">
-                 <div className="flex gap-1.5">
-                    {[1,2,3,4,5].map(i => <div key={i} className="w-1.5 h-1.5 rounded-full bg-[var(--f1-red)] animate-pulse" style={{ animationDelay: `${i*0.2}s` }} />)}
-                 </div>
-                 <span className="text-[10px] font-bold tracking-[0.2em] text-white/70 uppercase">Season 2026 Live</span>
+              <div className="flex flex-wrap items-center gap-3 mb-8">
+                <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md hover:bg-white/10 transition-colors cursor-default">
+                   <div className="flex gap-1.5">
+                      {[1,2,3,4,5].map(i => <div key={i} className="w-1.5 h-1.5 rounded-full bg-[var(--f1-red)] animate-pulse" style={{ animationDelay: `${i*0.2}s` }} />)}
+                   </div>
+                   <span className="text-[10px] font-bold tracking-[0.2em] text-white/70 uppercase">Season 2026 Live</span>
+                </div>
+                
+                {/* Unofficial Fan Project Badge - Copyright Protection */}
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--accent-cyan)]/10 border border-[var(--accent-cyan)]/30 backdrop-blur-md">
+                   <span className="text-[10px] font-bold tracking-[0.15em] text-[var(--accent-cyan)] uppercase">⚡ Unofficial Fan Project</span>
+                </div>
               </div>
               
               <h1 className="text-7xl md:text-[5.5rem] lg:text-[7rem] font-black tracking-tighter mb-8 font-orbitron leading-[0.85] uppercase">
