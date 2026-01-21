@@ -15,6 +15,7 @@ export default function LoginPage() {
   const [favDriver, setFavDriver] = useState("");
   const [authMode, setAuthMode] = useState<AuthMode>("signin");
   const [loading, setLoading] = useState(false);
+  const [checkingSession, setCheckingSession] = useState(true);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
@@ -23,6 +24,22 @@ export default function LoginPage() {
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
+
+  useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+         if (session) {
+            router.push('/');
+         } else {
+            setCheckingSession(false);
+         }
+      } catch (error) {
+         setCheckingSession(false);
+      }
+    };
+    checkSession();
+  }, []);
 
   const clearMessage = () => setMessage(null);
 
@@ -43,6 +60,13 @@ export default function LoginPage() {
 
   const passwordStrength = getPasswordStrength(password);
 
+  const withTimeout = async <T,>(promise: Promise<T>, ms = 8000): Promise<T> => {
+      const timeout = new Promise<never>((_, reject) => 
+          setTimeout(() => reject(new Error("Request timed out. Check connection.")), ms)
+      );
+      return Promise.race([promise, timeout]);
+  };
+
   const handleSignUp = async () => {
     if (!email || !password || (authMode === "signup" && !username)) {
       setMessage({ type: "error", text: "Please fill in all fields" });
@@ -56,33 +80,36 @@ export default function LoginPage() {
     setLoading(true);
     clearMessage();
     
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { 
-        emailRedirectTo: `${location.origin}/auth/callback`,
-        data: { 
-          username,
-          favorite_team: favTeam,
-          favorite_driver: favDriver
-        } 
-      },
-    });
+    try {
+        const { error } = await withTimeout(supabase.auth.signUp({
+          email,
+          password,
+          options: { 
+            emailRedirectTo: `${location.origin}/auth/callback`,
+            data: { 
+              username,
+              favorite_team: favTeam,
+              favorite_driver: favDriver
+            } 
+          },
+        }));
 
-    if (!error) {
-       // Send welcome email (fire and forget)
-       fetch('/api/auth/welcome', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, username })
-       }).catch(console.error);
-    }
-    
-    setLoading(false);
-    if (error) {
-      setMessage({ type: "error", text: error.message });
-    } else {
-      setMessage({ type: "success", text: "Check your email for the confirmation link!" });
+        if (!error) {
+           // Send welcome email (fire and forget)
+           fetch('/api/auth/welcome', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email, username })
+           }).catch(console.error);
+           
+           setMessage({ type: "success", text: "Check your email for the confirmation link!" });
+        } else {
+           setMessage({ type: "error", text: error.message });
+        }
+    } catch (err: any) {
+        setMessage({ type: "error", text: err.message || "An error occurred" });
+    } finally {
+        setLoading(false);
     }
   };
 
@@ -95,14 +122,20 @@ export default function LoginPage() {
     setLoading(true);
     clearMessage();
     
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    
-    setLoading(false);
-    if (error) {
-      setMessage({ type: "error", text: error.message });
-    } else {
-      router.push("/");
-      router.refresh();
+    try {
+        const { error } = await withTimeout(supabase.auth.signInWithPassword({ email, password }));
+        
+        if (error) {
+          setMessage({ type: "error", text: error.message });
+          setLoading(false);
+        } else {
+          router.push("/");
+          router.refresh();
+          // Keep loading true during redirect for seamless transition
+        }
+    } catch (err: any) {
+        setMessage({ type: "error", text: err.message || "Login timed out" });
+        setLoading(false);
     }
   };
 
@@ -115,16 +148,21 @@ export default function LoginPage() {
     setLoading(true);
     clearMessage();
     
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: `${location.origin}/auth/callback` },
-    });
-    
-    setLoading(false);
-    if (error) {
-      setMessage({ type: "error", text: error.message });
-    } else {
-      setMessage({ type: "success", text: "Magic link sent! Check your email." });
+    try {
+        const { error } = await withTimeout(supabase.auth.signInWithOtp({
+          email,
+          options: { emailRedirectTo: `${location.origin}/auth/callback` },
+        }));
+        
+        if (error) {
+          setMessage({ type: "error", text: error.message });
+        } else {
+          setMessage({ type: "success", text: "Magic link sent! Check your email." });
+        }
+    } catch (err: any) {
+        setMessage({ type: "error", text: err.message });
+    } finally {
+        setLoading(false);
     }
   };
 
@@ -137,17 +175,33 @@ export default function LoginPage() {
     setLoading(true);
     clearMessage();
     
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${location.origin}/auth/callback?next=/reset-password`,
-    });
-    
-    setLoading(false);
-    if (error) {
-      setMessage({ type: "error", text: error.message });
-    } else {
-      setMessage({ type: "success", text: "Password reset link sent!" });
+    try {
+        const { error } = await withTimeout(supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${location.origin}/auth/callback?next=/reset-password`,
+        }));
+        
+        if (error) {
+          setMessage({ type: "error", text: error.message });
+        } else {
+          setMessage({ type: "success", text: "Password reset link sent!" });
+        }
+    } catch (err: any) {
+        setMessage({ type: "error", text: err.message });
+    } finally {
+        setLoading(false);
     }
   };
+  
+  if (checkingSession) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-[var(--bg-void)]">
+           <div className="animate-pulse flex flex-col items-center gap-4">
+              <div className="w-12 h-12 border-4 border-[var(--f1-red)] border-t-transparent rounded-full animate-spin"></div>
+              <div className="text-[var(--text-muted)] text-sm font-mono tracking-widest">AUTHENTICATING...</div>
+           </div>
+        </div>
+      );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[var(--bg-void)] p-4 relative overflow-hidden">
