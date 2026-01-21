@@ -25,25 +25,62 @@ export default function LoginPage() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 
+  // === BULLETPROOF TIMEOUT HELPER ===
+  // Must be defined BEFORE useEffect that uses it
+  const withTimeout = async <T,>(promise: Promise<T>, ms = 8000): Promise<T> => {
+      const timeout = new Promise<never>((_, reject) => 
+          setTimeout(() => reject(new Error("Request timed out. Check connection.")), ms)
+      );
+      return Promise.race([promise, timeout]);
+  };
+
+  // === HARD DEADLINE SAFETY NET ===
+  // This absolute deadline GUARANTEES we exit checkingSession state
+  useEffect(() => {
+    const hardDeadline = setTimeout(() => {
+      if (checkingSession) {
+        console.warn("HARD DEADLINE: Force-exiting session check after 5s");
+        setCheckingSession(false);
+      }
+    }, 5000); // 5 seconds absolute maximum
+    
+    return () => clearTimeout(hardDeadline);
+  }, [checkingSession]);
+
+  // === SESSION CHECK ===
   useEffect(() => {
     const checkSession = async () => {
       try {
-        // Enforce 3s timeout on session check to prevent hanging
-        const { data } = await withTimeout(supabase.auth.getSession(), 3000);
+        // 2.5s timeout - fail fast, don't keep users waiting
+        const { data } = await withTimeout(supabase.auth.getSession(), 2500);
          if (data?.session) {
             router.push('/');
          } else {
             setCheckingSession(false);
          }
       } catch (error) {
-         // If check hangs/fails, force clear state to "reset" the confused browser
-         console.warn("Session check failed, forcing purge...", error);
-         await supabase.auth.signOut(); 
+         // Session check failed/timed out - force purge any corrupt state
+         console.warn("Session check failed, purging state...", error);
+         try {
+           // Quick signOut attempt (don't wait long)
+           await withTimeout(supabase.auth.signOut(), 1000);
+         } catch {
+           // If even signOut hangs, just continue - hard deadline will save us
+         }
          setCheckingSession(false);
       }
     };
     checkSession();
   }, []);
+
+  const forceReset = async () => {
+    try {
+      await supabase.auth.signOut();
+    } catch {}
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.reload();
+  };
 
   const clearMessage = () => setMessage(null);
 
@@ -63,13 +100,6 @@ export default function LoginPage() {
   };
 
   const passwordStrength = getPasswordStrength(password);
-
-  const withTimeout = async <T,>(promise: Promise<T>, ms = 8000): Promise<T> => {
-      const timeout = new Promise<never>((_, reject) => 
-          setTimeout(() => reject(new Error("Request timed out. Check connection.")), ms)
-      );
-      return Promise.race([promise, timeout]);
-  };
 
   const handleSignUp = async () => {
     if (!email || !password || (authMode === "signup" && !username)) {
@@ -196,12 +226,36 @@ export default function LoginPage() {
     }
   };
   
+  // State for showing force reset option
+  const [showForceReset, setShowForceReset] = useState(false);
+
+  // Show "Force Reset" option after 3 seconds
+  useEffect(() => {
+    if (checkingSession) {
+      const timer = setTimeout(() => setShowForceReset(true), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [checkingSession]);
+  
   if (checkingSession) {
       return (
         <div className="min-h-screen flex items-center justify-center bg-[var(--bg-void)]">
-           <div className="animate-pulse flex flex-col items-center gap-4">
+           <div className="flex flex-col items-center gap-4">
               <div className="w-12 h-12 border-4 border-[var(--f1-red)] border-t-transparent rounded-full animate-spin"></div>
-              <div className="text-[var(--text-muted)] text-sm font-mono tracking-widest">AUTHENTICATING...</div>
+              <div className="text-[var(--text-muted)] text-sm font-mono tracking-widest animate-pulse">AUTHENTICATING...</div>
+              
+              {/* Force Reset - appears after 3s */}
+              {showForceReset && (
+                <div className="mt-6 text-center animate-fade-in">
+                  <p className="text-xs text-[var(--text-subtle)] mb-2">Stuck? Clear your session and try again.</p>
+                  <button 
+                    onClick={forceReset} 
+                    className="px-4 py-2 text-xs bg-[var(--f1-red)] hover:bg-[var(--f1-red-bright)] text-white rounded-lg transition font-bold uppercase tracking-wider"
+                  >
+                    Force Reset
+                  </button>
+                </div>
+              )}
            </div>
         </div>
       );

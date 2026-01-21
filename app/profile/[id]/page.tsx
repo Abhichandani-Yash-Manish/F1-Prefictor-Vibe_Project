@@ -339,6 +339,18 @@ export default function UserProfilePage() {
                                 <F1Button onClick={handleSaveProfile} disabled={saving} className="w-full mt-2">
                                     {saving ? "Saving..." : "Save Profile"}
                                 </F1Button>
+                                
+                                {/* Logout Button */}
+                                <button 
+                                    onClick={async () => {
+                                        await supabase.auth.signOut();
+                                        router.push('/login');
+                                        router.refresh();
+                                    }}
+                                    className="w-full mt-3 py-2 text-sm text-[var(--text-muted)] hover:text-[var(--f1-red)] border border-[var(--glass-border)] hover:border-[var(--f1-red)]/50 rounded-lg transition uppercase tracking-wider font-bold"
+                                >
+                                    Log Out
+                                </button>
                             </div>
                         </div>
                     )}
