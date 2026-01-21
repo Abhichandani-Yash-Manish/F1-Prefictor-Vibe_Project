@@ -249,15 +249,30 @@ export default function UserProfilePage() {
                             </div>
                             
                             {isOwner && (
-                                <div className="mt-4 flex gap-3 justify-center md:justify-start">
+                                <div className="mt-4 flex flex-wrap gap-3 justify-center md:justify-start animate-fade-in-up">
                                     <button 
                                         onClick={() => setIsEditing(true)}
-                                        className="text-xs text-[var(--accent-cyan)] hover:text-white hover:underline flex items-center gap-1"
+                                        className="btn-ghost text-xs px-4 py-2 border border-[var(--glass-border)] hover:border-[var(--accent-cyan)] hover:text-[var(--accent-cyan)] rounded-full transition-all flex items-center gap-2"
                                     >
                                         ✏️ Edit Profile
                                     </button>
+                                    <button 
+                                        onClick={() => router.push('/profile/settings')}
+                                        className="btn-ghost text-xs px-4 py-2 border border-[var(--glass-border)] hover:border-[var(--text-grey)] hover:text-white rounded-full transition-all flex items-center gap-2"
+                                    >
+                                        ⚙️ Settings
+                                    </button>
                                 </div>
                             )}
+                            
+                            <div className="mt-4 flex justify-center md:justify-start">
+                                 <button 
+                                    onClick={() => router.push(`/profile/${targetUserId}/analytics`)}
+                                    className="text-xs font-bold text-[var(--accent-gold)] hover:text-white uppercase tracking-wider flex items-center gap-1 transition-colors group/analytics"
+                                 >
+                                    📊 View Telemetry Analytics <span className="group-hover/analytics:translate-x-1 transition-transform">→</span>
+                                 </button>
+                            </div>
                         </>
                     ) : (
                         <div className="mt-4 bg-[var(--bg-surface)] p-6 rounded-xl border border-[var(--accent-gold)]/30 animate-fade-in-up max-w-md">
@@ -453,7 +468,7 @@ export default function UserProfilePage() {
                                     onClick={() => router.push('/history')}
                                     className="text-xs font-bold text-[var(--accent-cyan)] hover:text-white uppercase tracking-wider flex items-center gap-1 transition-colors"
                                 >
-                                    View Logic Logs →
+                                    View Full History →
                                 </button>
                             </div>
                             <div className="space-y-4">
