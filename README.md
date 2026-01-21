@@ -10,6 +10,7 @@
 ![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)
+![Resend](https://img.shields.io/badge/Resend-000000?style=for-the-badge&logo=resend&logoColor=white)
 
 <br/>
 
@@ -87,9 +88,43 @@ The **NotificationBell** keeps you updated on friend requests, league invites, r
 | 📊 **Confidence Meter** | `ConfidenceMeter.tsx` | Track-style gauge displaying prediction confidence percentages with F1 sector colors. |
 | 🌤️ **Weather Widget** | `WeatherWidget.tsx` | Displays current and forecasted weather for each circuit—crucial for tire strategy predictions. |
 | 💬 **League Chat** | `LeagueChat.tsx` | Real-time chat with emoji reactions, smooth animations, and team radio styling. |
+| 📈 **Analytics Dashboard** | `TrendChart.tsx` + `AccuracyHeatmap.tsx` | **NEW:** Track your prediction performance over time with interactive charts and visual heatmaps showing accuracy by race. |
+| ⏱️ **Live Timing Tower** | `LiveTimingTower.tsx` | **NEW:** Simulated live timing display showing race positions with real-time animations. |
+| 🔔 **Notification Preferences** | Settings Panel | **NEW:** Customize which notifications you receive—race reminders, friend activity, rivalry updates. |
+| 🎫 **Shareable Prediction Cards** | `PredictionReceipt.tsx` | **NEW:** Generate beautiful, shareable images of your predictions for social media bragging rights. |
 | 🍪 **Cookie Consent** | `CookieConsent.tsx` | GDPR-compliant animated consent banner that respects user privacy. |
-| 👨‍💻 **Developer Identity** | `DeveloperModal.tsx` | Interactive "Pit Crew" card featuring linkedIn badge integration—hidden in the footer for those who scroll. |
+| 👨‍💻 **Developer Identity** | `DeveloperModal.tsx` | Interactive "Pit Crew" card featuring LinkedIn badge integration—hidden in the footer for those who scroll. |
 | 💰 **Strategic Ads** | `AdUnit.tsx` | Non-intrusive Google AdSense integration across 6 pages with 7 placements. |
+
+---
+
+## 📧 Premium Email Experience
+
+**Every interaction matters.** F1 Apex sends beautifully branded transactional emails that match our dark, premium aesthetic:
+
+| Email Type | Trigger | Special Touch |
+|:-----------|:--------|:--------------|
+| 🏁 **Welcome Email** | New user signup | Personalized greeting + F1 quote (Resend) |
+| 🔗 **Magic Link** | Passwordless login | *"Racing is life..."* — Steve McQueen |
+| 🔐 **Password Reset** | Forgot password | *"You learn more from your failures..."* — Niki Lauda |
+| 🏆 **League Invite** | Friend shares league | *"Second or third place is not enough..."* — Ayrton Senna |
+| ✅ **Confirm Signup** | Email verification | *"Be proud of who you are..."* — Lewis Hamilton |
+
+All emails feature our logo, F1-red CTA buttons, and elegant quote blocks with contextually relevant F1 wisdom.
+
+---
+
+## 🛡️ Bulletproof Authentication
+
+We've implemented **enterprise-grade session handling** to ensure users never get stuck:
+
+| Feature | Implementation |
+|:--------|:---------------|
+| ⏱️ **5-Second Hard Deadline** | Session checks are guaranteed to complete within 5 seconds—no infinite loading. |
+| 🔄 **Force Reset Button** | Appears after 3 seconds on the authenticating screen, allowing users to clear sessions and retry. |
+| 🚪 **Accessible Logout** | Logout button visible on Profile page (no edit mode required) AND in the desktop Navbar. |
+| 📱 **Mobile Optimized** | Non-blocking auth checks, touch-optimized controls, and scroll lock fixes for iOS Safari. |
+| 🔥 **Fire & Forget** | Background auth operations don't block the main thread—UI stays responsive. |
 
 ---
 
@@ -153,6 +188,11 @@ Built for **speed**, **scalability**, and **developer experience**.
 │              │  PostgreSQL + Auth  │                        │
 │              │  Real-time Channels │                        │
 │              └─────────────────────┘                        │
+│                        │                                    │
+│              ┌─────────────────────┐                        │
+│              │  Resend             │                        │
+│              │  Transactional Email│                        │
+│              └─────────────────────┘                        │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -165,6 +205,7 @@ Built for **speed**, **scalability**, and **developer experience**.
 | **Telemetry** | Supabase | PostgreSQL, Auth, Real-time subscriptions |
 | **Grid Position** | Vercel | Global CDN, serverless Python functions |
 | **Analytics** | Vercel Analytics + Speed Insights | Traffic & Core Web Vitals |
+| **Communications** | Resend | Transactional email delivery |
 | **Revenue** | Google AdSense | Strategic, non-intrusive ad placements |
 
 ---
@@ -207,6 +248,7 @@ Our scoring system rewards **accuracy** and **boldness**.
 - Node.js 18+ and npm
 - Python 3.10+ (for local backend)
 - A Supabase project ([Create one free](https://supabase.com))
+- A Resend account for transactional emails ([Sign up free](https://resend.com))
 - Git
 
 ### 1️⃣ Clone the Repository
@@ -230,6 +272,10 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 # API Configuration  
 NEXT_PUBLIC_API_URL=http://localhost:3000/api
 
+# Email (Resend)
+RESEND_API_KEY=re_xxx
+SMTP_FROM_EMAIL=noreply@yourdomain.com
+
 # Optional: Google AdSense
 NEXT_PUBLIC_ADSENSE_CLIENT_ID=ca-pub-xxx
 ```
@@ -241,7 +287,10 @@ Run the SQL schemas in Supabase SQL Editor (in order):
 3. `friends_and_chat_schema.sql` — Social features
 4. `enhancements_schema.sql` — Achievements + activity feed
 
-### 5️⃣ Ignition
+### 5️⃣ Configure Supabase Auth Emails
+Navigate to **Supabase Dashboard → Authentication → Email Templates** and paste the custom HTML templates from [auth_email_templates.md](./auth_email_templates.md) for a branded email experience.
+
+### 6️⃣ Ignition
 ```bash
 npm run dev
 ```
@@ -275,10 +324,10 @@ F1 Apex includes the **complete 2026 driver lineup** with all 11 teams and 22 dr
 fl-predictor/
 ├── 📂 app/                      # Next.js App Router
 │   ├── 📄 layout.tsx            # Root layout (fonts, analytics, AdSense)
-│   ├── 📄 page.tsx              # Homepage (431 lines)
+│   ├── 📄 page.tsx              # Homepage (Server Component)
 │   ├── 📄 globals.css           # Design system (1025 lines)
 │   │
-│   ├── 📂 components/           # Reusable UI components (26 files)
+│   ├── 📂 components/           # Reusable UI components (30+ files)
 │   │   ├── AdUnit.tsx           # AdSense integration
 │   │   ├── CookieConsent.tsx    # GDPR compliance
 │   │   ├── DeveloperModal.tsx   # LinkedIn badge modal
@@ -286,13 +335,23 @@ fl-predictor/
 │   │   ├── GauntletModal.tsx    # Rivalry challenges
 │   │   ├── LaunchSequence.tsx   # Countdown timer
 │   │   ├── LeagueChat.tsx       # Real-time chat
-│   │   ├── Navbar.tsx           # Navigation
+│   │   ├── LiveTimingTower.tsx  # 🆕 Simulated timing tower
+│   │   ├── MobileMenu.tsx       # Touch-optimized mobile nav
+│   │   ├── Navbar.tsx           # Navigation + desktop logout
 │   │   ├── NotificationBell.tsx # Notification dropdown
+│   │   ├── NotificationPreferences.tsx # 🆕 User settings
 │   │   ├── PredictionForm.tsx   # Prediction submission
+│   │   ├── PredictionReceipt.tsx # 🆕 Shareable cards
 │   │   ├── RivalryCard.tsx      # Rivalry display
+│   │   ├── StreakBadge.tsx      # Prediction streak indicator
 │   │   ├── TelemetryBackground.tsx # Animated canvas (11KB)
 │   │   ├── ConfidenceMeter.tsx  # Gauge component
 │   │   ├── WeatherWidget.tsx    # Circuit weather
+│   │   │
+│   │   ├── 📂 Analytics/        # 🆕 Analytics components
+│   │   │   ├── TrendChart.tsx   # Historical performance
+│   │   │   └── AccuracyHeatmap.tsx # Race-by-race accuracy
+│   │   │
 │   │   └── 📂 ui/               # Design system atoms
 │   │       ├── Badge.tsx
 │   │       ├── F1Button.tsx
@@ -303,14 +362,16 @@ fl-predictor/
 │   │   ├── drivers.ts           # 2026 grid (154 lines)
 │   │   └── supabase.ts          # Supabase client
 │   │
-│   └── 📂 [routes]/             # 19 page routes
+│   └── 📂 [routes]/             # 19+ page routes
 │       ├── admin/               # Admin dashboard
+│       ├── analytics/           # 🆕 Analytics page
 │       ├── calendar/            # 2026 race calendar
 │       ├── history/             # Prediction history
 │       ├── leaderboard/         # Global standings
 │       ├── leagues/             # League management
 │       ├── predict/[id]/        # Prediction form
-│       ├── profile/             # User profiles
+│       ├── profile/[id]/        # User profiles (with logout)
+│       ├── receipt/             # 🆕 Prediction receipts
 │       ├── rivalries/           # Head-to-head
 │       ├── standings/           # Championship
 │       └── ...
@@ -318,11 +379,13 @@ fl-predictor/
 ├── 📂 api/                      # FastAPI backend
 │   ├── index.py                 # Vercel entry point
 │   ├── main.py                  # All endpoints (1500+ lines)
+│   ├── email_service.py         # 🆕 Resend integration (350 lines)
 │   ├── scoring.py               # Points engine
 │   └── requirements.txt
 │
 ├── 📂 public/                   
 │   ├── ads.txt                  # AdSense authorization
+│   ├── logo.png                 # Brand logo
 │   └── manifest.json            # PWA manifest
 │
 ├── 📄 vercel.json               # Deployment config
@@ -339,6 +402,7 @@ fl-predictor/
 | **Rate Limiting** | Per-endpoint limits (predictions: 10/min) |
 | **Pydantic Validation** | Strict input validation in FastAPI |
 | **JWT Verification** | Secure token authentication |
+| **Session Hard Deadline** | 5-second timeout prevents auth hangs |
 | **GDPR Compliance** | Cookie consent with local storage |
 | **Ads.txt** | Authorized Digital Sellers file |
 | **Safari Compat** | Header sanitization in API client |
@@ -352,8 +416,11 @@ fl-predictor/
 - [x] **Phase 3:** Real-time API Integration (Results & Standings)
 - [x] **Phase 4:** Leagues, Rivalries & Social Features
 - [x] **Phase 5:** Monetization, Compliance & Developer Identity
-- [ ] **Phase 6:** Live Race Chat & Push Notifications
-- [ ] **Phase 7:** Mobile App (React Native)
+- [x] **Phase 6:** Analytics Dashboard & Performance Tracking
+- [x] **Phase 7:** Premium Email Experience (Resend + Supabase)
+- [x] **Phase 8:** Mobile Optimization & Session Hardening
+- [ ] **Phase 9:** Live Race Chat & Push Notifications
+- [ ] **Phase 10:** Mobile App (React Native)
 
 ---
 

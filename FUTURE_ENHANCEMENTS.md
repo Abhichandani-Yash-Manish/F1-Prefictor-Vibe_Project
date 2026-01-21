@@ -1,56 +1,68 @@
 # F1 Apex - Future Enhancement Suggestions
 
 > **Created:** January 15, 2026  
+> **Updated:** January 21, 2026  
 > **Purpose:** Documented roadmap for future improvements
 
 ---
 
-## 🔥 High Impact (Priority 1)
+## ✅ Completed Features
 
-### Mobile Menu Drawer
-- **Problem:** Navbar collapses on mobile but has no accessible menu
-- **Solution:** Add hamburger menu with slide-out drawer
-- **Effort:** Medium
+All Priority 1 features have been implemented! 🎉
 
-### User Profile Page
-- **Problem:** No way for users to see their stats/history
-- **Solution:** Create `/profile` page with prediction history, stats, badges
-- **Effort:** High
+### ~~Mobile Menu Drawer~~ ✅
+- **Status:** SHIPPED in `MobileMenu.tsx`
+- Hamburger menu with animated slide-out drawer
+- Touch-optimized for mobile devices
 
-### Notifications System
-- In-app notification bell for deadlines, results, ranking changes
-- **Effort:** High
+### ~~User Profile Page~~ ✅
+- **Status:** SHIPPED at `/profile`
+- Complete prediction history, stats, badges
+- Editable profile with logout button
 
----
-
-## 🏎️ Engagement Boosters (Priority 2)
-
-| Feature | Description |
-|---------|-------------|
-| Prediction Sharing | Share to social media with image cards |
-| Streak Tracker | Badge for consecutive race predictions |
-| Achievement System | Earn badges for milestones |
-| Weekly Email Digest | Recap + upcoming race reminder |
+### ~~Notifications System~~ ✅
+- **Status:** SHIPPED in `NotificationBell.tsx`
+- Friend requests, league invites, race reminders
+- Real-time notification dropdown
 
 ---
 
-## 💅 Polish (Priority 3)
+## ✅ Engagement Boosters (Completed)
 
-- Dark/Light Mode Toggle
-- Sound Effects (optional F1 sounds)
-- Page Transitions (smooth fades)
-- Loading Skeletons
+| Feature | Status | Component |
+|---------|--------|-----------|
+| ~~Prediction Sharing~~ | ✅ DONE | `ShareButton.tsx`, `/submissions/[id]` |
+| ~~Streak Tracker~~ | ✅ DONE | `StreakBadge.tsx` |
+| ~~Achievement System~~ | ✅ DONE | Database + Profile page |
+| ~~Weekly Email Digest~~ | ✅ DONE | `email_service.py` (Resend) |
+
+---
+
+## 🎯 Remaining Polish (Priority 3)
+
+- [ ] Dark/Light Mode Toggle
+- [ ] Sound Effects (optional F1 sounds)
+- [x] ~~Page Transitions (smooth fades)~~ — Done in `template.tsx`
+- [x] ~~Loading Skeletons~~ — Done in `TelemetryLoader.tsx`
 
 ---
 
 ## 🔧 Technical (Priority 4)
 
-- PWA Support (installable app)
-- Push Notifications
-- Data Caching (SWR/React Query)
-- Error Boundaries
+- [ ] PWA Support (installable app)
+- [ ] Push Notifications (browser)
+- [x] ~~Data Caching~~ — Uses React 19 caching
+- [x] ~~Error Boundaries~~ — Implemented
 
 ---
 
-## Implementation Order
-1. Mobile Menu → 2. User Profile → 3. Achievements → 4. Page Transitions → 5. PWA
+## 🚀 Future Roadmap
+
+1. **PWA Support** — Make app installable
+2. **Push Notifications** — Browser-based alerts
+3. **Dark Mode** — System preference toggle
+4. **Mobile App** — React Native port
+
+---
+
+*All major features shipped as of v3.0*

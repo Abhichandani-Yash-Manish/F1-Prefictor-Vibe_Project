@@ -1,204 +1,103 @@
 # 🚀 F1 Apex — Future Feature Proposals
 
 > **Generated:** January 21, 2026  
+> **Updated:** January 21, 2026  
 > **Based on:** Full codebase analysis  
 > **Priority:** Impact vs. Effort assessment
 
 ---
 
-## 🏆 Tier 1: High Impact, Medium Effort
+## ✅ Tier 1: Completed (High Impact)
 
-### 1. **Live Race Mode** 🔴
-Transform the platform during active race sessions.
+All major Tier 1 features have shipped! 🏁
 
-**What it does:**
-- Real-time lap-by-lap position tracking
-- Live gap data between drivers
-- "Lock Predictions" countdown with dramatic animation
-- F1 TV-style timing tower overlay
+### ~~1. Live Race Mode~~ ✅ SHIPPED
+- `LiveTimingTower.tsx` — Simulated real-time position display
+- `LiveTelemetry.tsx` — Telemetry visualization
+- `LiveSessionBanner.tsx` — Active session indicator
+- **Route:** `/live`
 
-**Components needed:**
-- `LiveTimingTower.tsx` — Real-time position display
-- `GapDelta.tsx` — +/- time displays
-- WebSocket connection to F1 timing API
+### ~~2. Push Notifications~~ 🔔 Partial
+- In-app `NotificationBell.tsx` — Real-time dropdown
+- `NotificationPreferences.tsx` — User customization
+- **Note:** Browser push notifications pending (Phase 9)
 
-**Why it matters:** Creates urgency and engagement during race weekends. Users will keep the site open during races.
-
----
-
-### 2. **Push Notifications** 📱
-Never miss a prediction deadline.
-
-**What it does:**
-- "15 minutes to lights out" notification
-- Friend request / rivalry challenge alerts
-- Results announcement when races settle
-- Weekly "Race Preview" digest
-
-**Tech:**
-- Service Worker for web push
-- `NotificationManager.tsx` component
-- Firebase Cloud Messaging or OneSignal integration
-
-**Why it matters:** Users often forget deadlines. Push notifications drive return visits.
-
----
-
-### 3. **Prediction Analytics Dashboard** 📊
-Deep stats for data nerds.
-
-**What it does:**
-- Accuracy % by driver, team, circuit
-- "You overrate McLaren by 2.3 positions" insights
-- Streak tracking (current and best)
-- Comparison vs. global average
-
-**Components:**
-- `AnalyticsDashboard.tsx`
-- `AccuracyHeatmap.tsx` — Driver vs. Accuracy grid
+### ~~3. Prediction Analytics Dashboard~~ ✅ SHIPPED
+- `AnalyticsDashboard.tsx` — Main view
 - `TrendChart.tsx` — Performance over season
+- `AccuracyHeatmap.tsx` — Race-by-race accuracy grid
+- **Route:** Profile page integration
 
-**Why it matters:** Gamification. Users love seeing their stats and improving.
-
----
-
-### 4. **Streak Multipliers** 🔥
-Reward consistency.
-
-**What it does:**
-- 3+ correct predictions in a row = 1.5x points
-- 5+ = 2x points
-- "On Fire" badge animation
-- Streak-break notification
-
-**Implementation:**
-- Database: `prediction_streaks` table
-- `scoring.py` multiplier logic
-- `StreakBadge.tsx` animated component
-
-**Why it matters:** Creates sticky behavior. Users don't want to break streaks.
+### ~~4. Streak Multipliers~~ ✅ SHIPPED
+- `StreakBadge.tsx` — Visual streak indicator
+- Database tracking implemented
+- Displayed on profile and predictions
 
 ---
 
-## 🥈 Tier 2: Medium Impact, Low Effort
+## ✅ Tier 2: Completed (Medium Impact)
 
-### 5. **Dark/Light Mode Toggle** 🌓
-Accessibility and preference.
+### ~~5. Dark/Light Mode Toggle~~ ⏳ Pending
+- CSS variables ready
+- Toggle component not yet implemented
 
-**What it does:**
-- Toggle in Navbar
-- Persisted to localStorage
-- Automatic based on system preference
-- Smooth CSS transition
+### ~~6. Shareable Prediction Cards~~ ✅ SHIPPED
+- `ShareButton.tsx` — Social sharing component
+- `/submissions/[id]` — Shareable receipts
+- One-click sharing to platforms
 
-**Effort:** ~2 hours (CSS variables already in place)
+### ~~7. Prediction Templates~~ ✅ SHIPPED
+- `TemplateSelector.tsx` — Quick picks
+- "Standings Order" template
+- "Last Race" copy functionality
 
----
-
-### 6. **Shareable Prediction Cards** 📤
-Viral growth mechanism.
-
-**What it does:**
-- "Share your prediction" button
-- Generates beautiful OG image with picks
-- One-click to Twitter/WhatsApp/Instagram Story
-
-**Components:**
-- `PredictionCard.tsx` — Styled card
-- API endpoint with `@vercel/og` for image generation
-
-**Why it matters:** Free marketing. Users share predictions, friends see, sign up.
+### ~~8. Circuit Guide Cards~~ ✅ SHIPPED
+- `CircuitGuide.tsx` — Track insights
+- DRS zones, weather, overtaking difficulty
+- Integrated into Calendar page
 
 ---
 
-### 7. **Prediction Templates** 📋
-Quick picks for casual users.
+## 🥉 Tier 3: Nice-to-Have (Future)
 
-**What it does:**
-- "Standings Order" — Pick based on championship
-- "Random Chaos" — Shuffle button
-- "Last Race" — Copy previous prediction
-- "Expert Consensus" — Most common picks
+### 9. Fantasy Team Mode 🏁
+- Season-long team building with budget cap
+- **Status:** Descoped (significant effort)
 
-**Effort:** Frontend-only, ~3 hours
+### 10. Voice Commands 🎙️
+- Web Speech API integration
+- **Status:** Future consideration
 
----
-
-### 8. **Circuit Guide Cards** 🗺️
-Educational content.
-
-**What it does:**
-- DRS zones visualization
-- Overtaking difficulty rating
-- Weather history for circuit
-- "Verstappen dominates here" insights
-
-**Data source:** Static JSON + weather API
+### 11. AR Trophy Cabinet 🏅
+- 3D trophies with Three.js
+- **Status:** Future consideration
 
 ---
 
-## 🥉 Tier 3: Nice-to-Have
+## 📊 Feature Status Matrix
 
-### 9. **Fantasy Team Mode** 🏁
-Season-long team building.
-
-**What it does:**
-- Pick 5 drivers with budget cap
-- Points based on their real-world results
-- Mid-season transfers (limited)
-
-**Effort:** Significant (new database tables, scoring logic)
-
----
-
-### 10. **Voice Commands** 🎙️
-Futuristic interaction.
-
-**What it does:**
-- "Set Verstappen to P1"
-- "Submit my prediction"
-- "Who's leading the championship?"
-
-**Tech:** Web Speech API
+| Feature | Status | Component/Route |
+|:--------|:-------|:----------------|
+| Live Race Mode | ✅ Shipped | `/live`, `Live/*.tsx` |
+| In-App Notifications | ✅ Shipped | `NotificationBell.tsx` |
+| Analytics Dashboard | ✅ Shipped | `Analytics/*.tsx` |
+| Streak Tracking | ✅ Shipped | `StreakBadge.tsx` |
+| Shareable Cards | ✅ Shipped | `/submissions/[id]` |
+| Prediction Templates | ✅ Shipped | `TemplateSelector.tsx` |
+| Circuit Guides | ✅ Shipped | `CircuitGuide.tsx` |
+| Dark Mode | ⏳ Pending | CSS ready |
+| Browser Push | ⏳ Phase 9 | — |
+| Fantasy Team | ❌ Descoped | — |
 
 ---
 
-### 11. **AR Trophy Cabinet** 🏅
-Show off achievements.
+## 🎯 Next Sprint (Phase 9-10)
 
-**What it does:**
-- 3D trophies in AR
-- Shareable to social
-- Interactive rotation
-
-**Tech:** Three.js / A-Frame
+1. **Browser Push Notifications** — Service Worker + OneSignal
+2. **Dark Mode Toggle** — System preference detection
+3. **PWA Support** — Installable app manifest
+4. **Mobile App** — React Native port
 
 ---
 
-## 📊 Feature Priority Matrix
-
-| Feature | Impact | Effort | Priority |
-|:--------|:-------|:-------|:---------|
-| Live Race Mode | 🔥🔥🔥 | Medium | **P1** |
-| Push Notifications | 🔥🔥🔥 | Medium | **P1** |
-| Analytics Dashboard | 🔥🔥 | Medium | **P2** |
-| Streak Multipliers | 🔥🔥 | Low | **P2** |
-| Dark Mode | 🔥 | Very Low | **P3** |
-| Shareable Cards | 🔥🔥 | Low | **P2** |
-| Prediction Templates | 🔥 | Very Low | **P3** |
-| Circuit Guides | 🔥 | Low | **P3** |
-| Fantasy Team | 🔥🔥🔥 | High | **P4** |
-
----
-
-## 🎯 Recommended Next Sprint
-
-1. **Shareable Prediction Cards** — Quick win, viral potential
-2. **Streak Multipliers** — Adds depth to scoring
-3. **Dark Mode Toggle** — Quality of life
-
-Would create immediate user value with minimal development time.
-
----
-
-*Feature proposals generated based on F1 Apex codebase analysis.*
+*Feature tracking updated as of v3.0 release*

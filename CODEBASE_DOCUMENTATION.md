@@ -1,8 +1,9 @@
 # 🏎️ F1 Apex — Complete Codebase Documentation
 
 > **Last Updated:** January 21, 2026  
-> **Version:** 2.0 (Complete Documentation)  
-> **Status:** Production-Ready | 2026 Season
+> **Version:** 3.0 (Analytics & Engagement Release)  
+> **Status:** Production-Ready | 2026 Season  
+> **Live:** [apexpredict.live](https://apexpredict.live)
 
 ---
 
@@ -24,7 +25,7 @@ This document serves as the **single source of truth** for developers. It covers
 │  │                   Next.js 16 App                         │   │
 │  │  ┌──────────┐  ┌──────────┐  ┌──────────┐              │   │
 │  │  │  Pages   │  │Components│  │   Lib    │              │   │
-│  │  │(19 routes)│ │  (26+4)  │  │ (API/DB) │              │   │
+│  │  │(22 routes)│ │  (35+)   │  │ (API/DB) │              │   │
 │  │  └────┬─────┘  └────┬─────┘  └────┬─────┘              │   │
 │  │       └─────────────┼─────────────┘                     │   │
 │  └─────────────────────┼───────────────────────────────────┘   │
@@ -68,13 +69,13 @@ fl-predictor/
 ├── 📂 app/                          # Next.js App Router
 │   │
 │   ├── 📄 layout.tsx                # Root layout (fonts, AdSense, analytics)
-│   ├── 📄 page.tsx                  # Landing page (431 lines)
-│   ├── 📄 globals.css               # Design system (1025 lines)
+│   ├── 📄 page.tsx                  # Landing page (Server Component)
+│   ├── 📄 globals.css               # Design system (1025+ lines)
 │   ├── 📄 template.tsx              # Page transitions template
 │   ├── 📄 sitemap.ts                # Dynamic sitemap generator
 │   ├── 📄 robots.ts                 # Robots.txt generator
 │   │
-│   ├── 📂 components/               # 26 Reusable UI Components
+│   ├── 📂 components/               # 35+ Reusable UI Components
 │   │   │
 │   │   │  ── CORE LAYOUT ──
 │   │   ├── Navbar.tsx               # Navigation (7KB) - Auth state, mobile menu
@@ -93,12 +94,30 @@ fl-predictor/
 │   │   ├── LaunchSequence.tsx       # Countdown timer (5KB)
 │   │   ├── ConfidenceMeter.tsx      # Gauge component (4KB)
 │   │   ├── WeatherWidget.tsx        # Circuit weather (8KB)
+│   │   ├── CircuitGuide.tsx         # 🆕 Track insights (6KB)
+│   │   ├── TemplateSelector.tsx     # 🆕 Quick prediction templates (9KB)
 │   │   │
 │   │   │  ── SOCIAL FEATURES ──
 │   │   ├── LeagueChat.tsx           # Real-time chat (11KB)
 │   │   ├── RivalryCard.tsx          # H2H display (11KB)
 │   │   ├── GauntletModal.tsx        # Rivalry challenges (8KB)
 │   │   ├── NotificationBell.tsx     # Notification dropdown (7KB)
+│   │   ├── NotificationPreferences.tsx # 🆕 User notification settings (4KB)
+│   │   ├── FeedbackForm.tsx         # 🆕 User feedback collection (7KB)
+│   │   ├── ShareButton.tsx          # 🆕 Social sharing (3KB)
+│   │   ├── StreakBadge.tsx          # 🆕 Prediction streak indicator (4KB)
+│   │   │
+│   │   │  ── ANALYTICS & LIVE ──
+│   │   ├── 📂 Analytics/            # 🆕 Performance Analytics
+│   │   │   ├── AnalyticsDashboard.tsx  # Main analytics view (8KB)
+│   │   │   ├── TrendChart.tsx          # Performance over time (3KB)
+│   │   │   └── AccuracyHeatmap.tsx     # Race-by-race accuracy (3KB)
+│   │   │
+│   │   ├── 📂 Live/                 # 🆕 Live Race Features
+│   │   │   ├── LiveTimingTower.tsx     # Simulated timing display (8KB)
+│   │   │   └── LiveTelemetry.tsx       # Real-time telemetry (5KB)
+│   │   │
+│   │   ├── LiveSessionBanner.tsx    # Active session indicator (2KB)
 │   │   │
 │   │   │  ── MONETIZATION & COMPLIANCE ──
 │   │   ├── AdUnit.tsx               # AdSense container (2KB)
@@ -120,9 +139,9 @@ fl-predictor/
 │   │   └── supabase.ts              # Supabase browser client
 │   │
 │   ├── 📂 hooks/                    # Custom React Hooks
-│   │   └── (keyboard shortcuts, etc.)
+│   │   └── useKeyboardShortcuts.ts  # Keyboard navigation hooks
 │   │
-│   └── 📂 [routes]/                 # 19 Page Routes
+│   └── 📂 [routes]/                 # 22 Page Routes
 │       ├── admin/                   # Admin dashboard
 │       ├── auth/                    # Auth callbacks
 │       ├── calendar/                # 2026 race calendar (24 races)
@@ -132,19 +151,22 @@ fl-predictor/
 │       ├── history/                 # Prediction history
 │       ├── leaderboard/             # Global standings
 │       ├── leagues/                 # League CRUD + chat
+│       ├── live/                    # 🆕 Live race experience
 │       ├── login/                   # Authentication
 │       ├── predict/[id]/            # Prediction form (dynamic)
 │       ├── privacy/                 # Privacy policy
-│       ├── profile/                 # User profiles
+│       ├── profile/                 # User profiles (with logout)
+│       │   └── settings/            # 🆕 Notification preferences
 │       ├── reset-password/          # Password reset
 │       ├── rivalries/               # H2H rivalries
 │       ├── standings/               # Championship tables
-│       ├── submissions/             # User submissions
+│       ├── submissions/[id]/        # 🆕 Shareable prediction receipts
 │       └── terms/                   # Terms of service
 │
 ├── 📂 api/                          # FastAPI Backend
 │   ├── index.py                     # Vercel entry point
 │   ├── main.py                      # All endpoints (1500+ lines)
+│   ├── email_service.py             # 🆕 Resend integration (350 lines)
 │   ├── scoring.py                   # Points calculation engine
 │   └── requirements.txt             # Python dependencies
 │
