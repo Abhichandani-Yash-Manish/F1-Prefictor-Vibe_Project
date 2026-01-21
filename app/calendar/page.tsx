@@ -193,7 +193,7 @@ export default function CalendarPage() {
   }, [loading, nextRace]);
 
   return (
-    <div className="min-h-screen bg-[var(--bg-void)] pb-16">
+    <div className="min-h-screen bg-[var(--bg-void)] pt-24 pb-16">
       {/* Racing stripe */}
       <div className="fixed top-0 left-0 w-2 h-full bg-gradient-to-b from-[var(--accent-cyan)] via-[var(--accent-cyan)]/50 to-transparent" />
       
