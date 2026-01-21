@@ -4,6 +4,7 @@ import { createBrowserClient } from "@supabase/ssr";
 import { config } from "../../lib/config";
 import { DRIVERS_WITH_PLACEHOLDER } from "../lib/drivers";
 import ConfidenceMeter from "./ConfidenceMeter";
+import TemplateSelector, { DriverPositions } from "./TemplateSelector";
 
 const DRIVERS = DRIVERS_WITH_PLACEHOLDER;
 
@@ -20,6 +21,13 @@ export default function PredictionForm({ raceId, onSuccess }: { raceId: number, 
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
+
+  const applyTemplate = (positions: DriverPositions) => {
+    setFormData(prev => ({
+        ...prev,
+        ...positions
+    }));
+  };
 
   const handleChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -113,6 +121,10 @@ export default function PredictionForm({ raceId, onSuccess }: { raceId: number, 
   return (
     <div className="space-y-8">
       
+      <div className="flex justify-end -mb-4">
+        <TemplateSelector onApply={applyTemplate} currentPicks={formData as DriverPositions} />
+      </div>
+
       {/* QUALIFYING SECTION */}
       <div className="telemetry-panel p-6 md:p-8">
         <div className="flex items-center gap-3 mb-6">

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import FeedbackForm from "@/app/components/FeedbackForm";
 
 export const metadata: Metadata = {
   title: "Contact Us | F1 Predictor League",
@@ -71,70 +72,7 @@ export default function ContactPage() {
           </div>
 
           {/* Contact Form */}
-          <div className="bg-[#1F2833] p-8 rounded-xl border border-gray-700 shadow-2xl">
-            <h2 className="text-xl font-bold text-white mb-6">Send us a Message</h2>
-            
-            <form className="space-y-6">
-              <div>
-                <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">
-                  Your Name
-                </label>
-                <input 
-                  type="text" 
-                  className="w-full p-3 bg-[#0B0C10] border border-gray-700 rounded text-white focus:border-red-500 outline-none transition"
-                  placeholder="Lewis Hamilton"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">
-                  Email Address
-                </label>
-                <input 
-                  type="email" 
-                  className="w-full p-3 bg-[#0B0C10] border border-gray-700 rounded text-white focus:border-red-500 outline-none transition"
-                  placeholder="you@example.com"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">
-                  Subject
-                </label>
-                <select className="w-full p-3 bg-[#0B0C10] border border-gray-700 rounded text-white focus:border-red-500 outline-none transition">
-                  <option value="">Select a topic...</option>
-                  <option value="feedback">General Feedback</option>
-                  <option value="bug">Report a Bug</option>
-                  <option value="feature">Feature Request</option>
-                  <option value="scoring">Scoring Question</option>
-                  <option value="account">Account Issue</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">
-                  Message
-                </label>
-                <textarea 
-                  className="w-full p-3 bg-[#0B0C10] border border-gray-700 rounded text-white focus:border-red-500 outline-none transition h-32 resize-none"
-                  placeholder="Tell us what's on your mind..."
-                />
-              </div>
-
-              <button 
-                type="submit"
-                className="w-full bg-red-600 text-white font-bold py-3 rounded hover:bg-red-700 transition shadow-[0_0_20px_rgba(220,38,38,0.3)] uppercase tracking-widest"
-              >
-                Send Message
-              </button>
-            </form>
-
-            <p className="text-gray-600 text-xs mt-4 text-center">
-              By submitting, you agree to our{" "}
-              <Link href="/privacy" className="text-red-500 hover:underline">Privacy Policy</Link>
-            </p>
-          </div>
+          <FeedbackForm />
         </div>
       </div>
     </div>

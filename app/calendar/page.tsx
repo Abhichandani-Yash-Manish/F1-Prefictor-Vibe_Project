@@ -10,6 +10,7 @@ import GlassCard from "../components/ui/GlassCard";
 import Badge from "../components/ui/Badge";
 import F1Button from "../components/ui/F1Button";
 import AdUnit from "../components/AdUnit";
+import CircuitGuide from "../components/CircuitGuide";
 
 interface Race {
   id: number;
@@ -294,6 +295,7 @@ export default function CalendarPage() {
                       <div className="flex items-center gap-2 text-[var(--text-muted)] mb-6">
                         <span className="text-[var(--f1-red)]">📍</span>
                         <span>{nextRace.circuit}</span>
+                        <CircuitGuide circuitName={nextRace.circuit} />
                       </div>
 
                       {/* Countdown */}
@@ -438,6 +440,7 @@ export default function CalendarPage() {
                         {/* Circuit */}
                         <div className="text-xs text-[var(--text-subtle)] truncate mb-3">
                           {race.circuit}
+                          <CircuitGuide circuitName={race.circuit} />
                         </div>
 
                         {/* Badges */}

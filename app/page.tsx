@@ -10,6 +10,7 @@ import F1Button from "./components/ui/F1Button";
 import Badge from "./components/ui/Badge";
 import LaunchSequence from "./components/LaunchSequence";
 import AdUnit from "./components/AdUnit";
+import LiveSessionBanner from "./components/LiveSessionBanner";
 
 interface Race {
   id: number;
@@ -142,6 +143,8 @@ export default function Home() {
           <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[var(--accent-cyan)] opacity-[0.04] blur-[180px] rounded-full" />
           <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[var(--f1-red)] opacity-[0.04] blur-[180px] rounded-full" />
       </div>
+
+      <LiveSessionBanner />
 
       {/* === HERO SECTION === */}
       <section className="relative pt-12 pb-24 md:pt-24 md:pb-40 border-b border-white/5 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-white/5 via-transparent to-transparent z-10">

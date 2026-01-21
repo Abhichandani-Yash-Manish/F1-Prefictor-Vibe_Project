@@ -6,6 +6,7 @@ import { createBrowserClient } from "@supabase/ssr";
 import { useRouter } from "next/navigation";
 import MobileMenu from "./MobileMenu";
 import NotificationBell from "./NotificationBell";
+import StreakBadge from "./StreakBadge";
 import { TEAM_COLORS } from "../lib/drivers";
 
 export default function Navbar() {
@@ -128,6 +129,7 @@ export default function Navbar() {
             <div className="flex items-center gap-4">
               {user ? (
                 <div className="flex items-center gap-4">
+                  <StreakBadge userId={user.id} />
                   <NotificationBell />
                   
                   <Link href="/profile" className="flex items-center gap-3 pl-4 border-l border-white/10 group">

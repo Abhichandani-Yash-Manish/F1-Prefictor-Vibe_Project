@@ -3,7 +3,7 @@ import Badge, { BadgeVariant } from './Badge';
 
 interface PageHeaderProps {
     title: string;
-    highlight: string; 
+    highlight?: string; 
     description?: string;
     badgeText?: string;
     badgeVariant?: BadgeVariant;
@@ -11,7 +11,7 @@ interface PageHeaderProps {
 
 export default function PageHeader({
     title,
-    highlight,
+    highlight = '',
     description,
     badgeText,
     badgeVariant = 'cyan'
