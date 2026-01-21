@@ -23,13 +23,23 @@ export default function Navbar() {
 
   useEffect(() => {
     const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
-      if (user) {
-         const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single();
-         setProfile(data);
-      } else {
-         setProfile(null);
+      try {
+        const { data: { user }, error } = await supabase.auth.getUser();
+        if (error || !user) {
+           if (error) console.error("Auth error:", error);
+           setUser(null);
+           setProfile(null);
+           // If there was an error (like User Not Found), clear simple session garbage
+           if (error) await supabase.auth.signOut(); 
+        } else {
+           setUser(user);
+           const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single();
+           setProfile(data);
+        }
+      } catch (err) {
+        console.error("Auth exception:", err);
+        setUser(null);
+        setProfile(null);
       }
     };
     getUser();

@@ -29,10 +29,10 @@ export default function Home() {
   const [topDrivers, setTopDrivers] = useState<any[]>([]);
   const [userStandings, setUserStandings] = useState<any[]>([]);
 
-  const supabase = createBrowserClient(
+  const [supabase] = useState(() => createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  ));
 
   const getRaceWeekendDates = (raceDateIso: string) => {
     if (!raceDateIso) return "TBD";
@@ -115,7 +115,8 @@ export default function Home() {
     };
 
     fetchData();
-  }, [supabase]);
+    fetchData();
+  }, []);
 
   // Combined Loading State: Show loader if Animation is running OR critical data is loading
   if (!introFinished || loading) {
