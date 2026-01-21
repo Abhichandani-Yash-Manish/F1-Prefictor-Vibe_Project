@@ -1,6 +1,6 @@
 "use client";
 import { createBrowserClient } from "@supabase/ssr";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { TEAM_COLORS, ALL_DRIVERS_NAMES, DRIVERS_DATA_2026 } from "../lib/drivers";
