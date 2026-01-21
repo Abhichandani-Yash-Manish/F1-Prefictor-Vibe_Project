@@ -162,9 +162,10 @@ export default function Navbar() {
               ) : (
                 <Link 
                   href="/login" 
-                  className="hidden lg:block bg-white text-black hover:bg-[var(--accent-gold)] px-6 py-2 rounded-full font-bold text-sm transition-colors"
+                  className="bg-white text-black hover:bg-[var(--accent-gold)] px-4 py-2 md:px-6 md:py-2 rounded-full font-bold text-xs md:text-sm transition-colors whitespace-nowrap mr-2 lg:mr-0"
                 >
-                  Get Started
+                  <span className="md:hidden">Login</span>
+                  <span className="hidden md:inline">Get Started</span>
                 </Link>
               )}
 

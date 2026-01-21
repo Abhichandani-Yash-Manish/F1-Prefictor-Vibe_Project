@@ -136,12 +136,12 @@ export default function HomeClient({ initialNextRace }: HomeClientProps) {
                 </div>
               </div>
               
-              <h1 className="text-7xl md:text-[5.5rem] lg:text-[7rem] font-black tracking-tighter mb-8 font-orbitron leading-[0.85] uppercase">
+              <h1 className="text-5xl sm:text-6xl md:text-[5.5rem] lg:text-[7rem] font-black tracking-tighter mb-6 md:mb-8 font-orbitron leading-[0.9] md:leading-[0.85] uppercase">
                 <span className="text-white block drop-shadow-2xl">Predict.</span>
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--f1-red)] via-[var(--f1-red-bright)] to-[var(--f1-red)] block animate-gradient-x">Dominate.</span>
               </h1>
               
-              <p className="text-xl md:text-2xl text-[var(--text-secondary)] max-w-xl leading-relaxed mb-12 font-light">
+              <p className="text-base md:text-2xl text-[var(--text-secondary)] max-w-xl leading-relaxed mb-8 md:mb-12 font-light">
                 The advanced telemetry hub for true F1 enthusiasts. Analyze data, outsmart the grid, and claim the championship.
               </p>
 
