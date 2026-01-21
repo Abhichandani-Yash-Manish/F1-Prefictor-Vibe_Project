@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import LoadingSpinner from "../components/LoadingSpinner";
 import GlassCard from "../components/ui/GlassCard";
+import AdUnit from "../components/AdUnit";
 
 export default function StandingsPage() {
   const [driverStandings, setDriverStandings] = useState<any[]>([]);
@@ -146,6 +147,16 @@ export default function StandingsPage() {
                   <div className="text-4xl md:text-5xl font-bold text-orange-500 font-mono">{top3[2].points}</div>
                 </GlassCard>
               )}
+            </div>
+
+            {/* === AD PLACEMENT === */}
+            <div className="my-8">
+              <AdUnit 
+                slot="standings_between"
+                format="horizontal"
+                style={{ minHeight: "90px" }}
+                label="Sponsored"
+              />
             </div>
 
             {/* Full Table */}

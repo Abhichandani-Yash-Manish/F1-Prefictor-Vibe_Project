@@ -12,6 +12,7 @@ import PageHeader from "../components/ui/PageHeader";
 import GlassCard from "../components/ui/GlassCard";
 import Badge from "../components/ui/Badge";
 import F1Button from "../components/ui/F1Button";
+import AdUnit from "../components/AdUnit";
 
 // Safe initialization of Supabase client
 function useSupabase() {
@@ -400,6 +401,16 @@ export default function RivalriesPage() {
             </GlassCard>
           )}
         </section>
+
+        {/* === AD PLACEMENT === */}
+        <div className="my-8">
+          <AdUnit 
+            slot="content_inline"
+            format="horizontal"
+            style={{ minHeight: "90px" }}
+            label="Sponsored"
+          />
+        </div>
 
         {/* Matchmaking Section */}
         <section className="pt-8 border-t border-[var(--glass-border)]">

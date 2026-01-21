@@ -9,6 +9,7 @@ import GlassCard from "../components/ui/GlassCard";
 import Badge from "../components/ui/Badge";
 import F1Button from "../components/ui/F1Button";
 import { TEAM_COLORS, getDriverTeam, getDriverNumber } from "../lib/drivers";
+import AdUnit from "../components/AdUnit";
 
 interface HistoryItem {
   id: number;
@@ -128,12 +129,14 @@ export default function HistoryPage() {
           </div>
         ) : (
           <div className="space-y-8 animate-fade-in-up">
-            {predictions.map((pred) => {
+            {predictions.map((pred, index) => {
               const raceDate = new Date(pred.races.race_time);
               const isPast = raceDate < new Date();
               const points = pred.points_total || 0;
+              const showAd = index === 2 && predictions.length > 3; // Show ad after 3rd item
               
               return (
+                <>
                 <GlassCard key={pred.id} className="p-0 overflow-hidden group">
                   {/* Card Header */}
                   <div className="bg-[#15171c] p-6 border-b border-[var(--glass-border)] flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -216,6 +219,15 @@ export default function HistoryPage() {
 
                   </div>
                 </GlassCard>
+                {showAd && (
+                  <AdUnit 
+                    slot="content_inline"
+                    format="horizontal"
+                    style={{ minHeight: "90px" }}
+                    label="Sponsored"
+                  />
+                )}
+                </>
               );
             })}
           </div>

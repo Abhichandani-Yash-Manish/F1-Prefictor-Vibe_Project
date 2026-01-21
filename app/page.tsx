@@ -9,6 +9,7 @@ import GlassCard from "./components/ui/GlassCard";
 import F1Button from "./components/ui/F1Button";
 import Badge from "./components/ui/Badge";
 import LaunchSequence from "./components/LaunchSequence";
+import AdUnit from "./components/AdUnit";
 
 interface Race {
   id: number;
@@ -240,6 +241,16 @@ export default function Home() {
           </div>
         </div>
       </section>
+      
+      {/* === AD PLACEMENT === */}
+      <div className="max-w-7xl mx-auto px-6 relative z-20">
+        <AdUnit 
+          slot="8932489234" // Placeholder slot ID
+          format="horizontal"
+          style={{ minHeight: "100px" }}
+          label="Advertisement"
+        />
+      </div>
 
       {/* === COMMAND CENTER GRID === */}
       <section className="py-24 px-6 relative z-10">
@@ -382,6 +393,16 @@ export default function Home() {
               </div>
           </div>
       </section>
+
+      {/* === AD PLACEMENT 2 === */}
+      <div className="max-w-7xl mx-auto px-6 relative z-20">
+        <AdUnit 
+          slot="homepage_footer"
+          format="horizontal"
+          style={{ minHeight: "90px" }}
+          label="Sponsored"
+        />
+      </div>
 
       {/* === CTA FOOTER with Parallax Feel === */}
       <section className="py-40 px-6 text-center relative overflow-hidden z-10">

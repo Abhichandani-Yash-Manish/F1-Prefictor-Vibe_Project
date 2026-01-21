@@ -2,12 +2,12 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter, Orbitron, JetBrains_Mono, Titillium_Web, Roboto_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { TeamRadioProvider } from "./components/TeamRadioToast";
 import { TelemetryBgWrapper } from "./components/TelemetryBgWrapper";
 import { KeyboardShortcutsHelpWrapper } from "./components/KeyboardShortcutsHelpWrapper";
+import CookieConsent from "./components/CookieConsent";
 
 // === FONTS (Data-Driven Typography) ===
 const inter = Inter({ 
@@ -67,14 +67,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Google AdSense Script - using standard script tag for Next.js 16 compatibility */}
-        {process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID && (
-          <script
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
-            crossOrigin="anonymous"
-          />
-        )}
+        {/* Google AdSense Script */}
+        <script 
+          async 
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2903739336841923"
+          crossOrigin="anonymous"
+        />
       </head>
       <body className={`
         ${inter.variable} 
@@ -90,12 +88,12 @@ export default function RootLayout({
           {/* Telemetry Network Background - Reactive Canvas */}
           <TelemetryBgWrapper />
           <Navbar />
-          <main className="flex-grow relative z-10 pt-24">{children}</main>
+          <main className="flex-grow relative z-10">{children}</main>
           <Footer />
           {/* Keyboard Shortcuts Help */}
           <KeyboardShortcutsHelpWrapper />
+          <CookieConsent />
           <Analytics />
-          <SpeedInsights />
         </TeamRadioProvider>
       </body>
     </html>

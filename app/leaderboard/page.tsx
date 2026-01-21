@@ -8,6 +8,7 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import GlassCard from "../components/ui/GlassCard";
 import Badge from "../components/ui/Badge";
 import F1Button from "../components/ui/F1Button";
+import AdUnit from "../components/AdUnit";
 
 interface UserStanding {
   id: string;
@@ -192,6 +193,16 @@ export default function LeaderboardPage() {
                 </GlassCard>
               </div>
             )}
+
+            {/* === AD PLACEMENT === */}
+            <div className="my-8">
+              <AdUnit 
+                slot="leaderboard_mid"
+                format="horizontal"
+                style={{ minHeight: "90px" }}
+                label="Sponsored"
+              />
+            </div>
 
             {/* Rest of standings */}
             <GlassCard className="overflow-hidden">
