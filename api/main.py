@@ -1203,6 +1203,27 @@ async def verify_league_grader(league_id: int, user_id: str) -> bool:
     
     return False
 
+class WelcomeEmailInput(BaseModel):
+    email: str
+    username: str
+
+@app.post("/auth/welcome")
+@limiter.limit("5/minute")
+def send_welcome_email_endpoint(request: Request, data: WelcomeEmailInput):
+    """Send welcome email to new user."""
+    # Note: We rely on frontend to call this after successful signup
+    # In a stricter app, we'd verify a superset token or use a webhook
+    if not EMAIL_SERVICE_AVAILABLE:
+        return {"success": False, "message": "Email service disabled"}
+    
+    try:
+        result = send_welcome_email(to=data.email, username=data.username)
+        return {"success": result.success, "message": result.message}
+    except Exception as e:
+        logger.error(f"Welcome email error: {e}")
+        # Don't fail the request, just log it
+        return {"success": False, "message": str(e)}
+
 @app.get("/leagues/{league_id}/predictions/{race_id}")
 @limiter.limit("30/minute")
 def get_league_predictions_for_race(request: Request, league_id: int, race_id: int, user_id: str = Depends(verify_user)):

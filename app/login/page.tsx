@@ -68,6 +68,15 @@ export default function LoginPage() {
         } 
       },
     });
+
+    if (!error) {
+       // Send welcome email (fire and forget)
+       fetch('/api/auth/welcome', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, username })
+       }).catch(console.error);
+    }
     
     setLoading(false);
     if (error) {
