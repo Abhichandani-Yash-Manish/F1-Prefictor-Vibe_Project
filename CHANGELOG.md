@@ -6,7 +6,9 @@
 ![Commits](https://img.shields.io/badge/Total_Commits-93-00E5FF?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Production-00D26A?style=for-the-badge)
 
-*A comprehensive record of every push to the F1 Apex repository*
+**A comprehensive record of every push to the F1 Apex repository**
+
+*From a late-night idea to a full-stack production platform—this is the story of F1 Apex.*
 
 </div>
 
@@ -24,11 +26,15 @@
 | **v2.1** | Jan 15, 2026 | Rivalry Release | Profile access, backend strong typing |
 | **v2.0** | Jan 15, 2026 | Production Ready | Clean deployment, security patches |
 | **v1.0** | Jan 10, 2026 | Genesis | Initial commit, core architecture |
+| **v0.9** | Jan 05, 2026 | The Blueprint | Tech stack selection, scoring logic definition |
+| **v0.1** | Nov 30, 2025 | Inception | Ideation, feasibility analysis, initial concept |
 
 ---
 
 ## 🚀 Version 3.0 — Analytics & Engagement Release
 **Released:** January 21, 2026 | **Commits:** 21223c2
+
+The culmination of the engagement phase—bringing data visualization and user analytics to life.
 
 ### 📚 Documentation Refresh
 | Commit | Time | Description |
@@ -42,6 +48,8 @@
 
 ## 🔧 Version 2.5 — Mobile Optimization
 **Released:** January 21, 2026 | **Commits:** 14
+
+The "make it work everywhere" release. Session hardening became mission-critical after discovering auth loops on iOS Safari.
 
 ### 🐛 Critical Fixes
 | Commit | Time | Description |
@@ -82,6 +90,8 @@
 ## 📧 Version 2.4.5 — Email & Backend Overhaul
 **Released:** January 21, 2026 | **Commits:** 6
 
+Transactional emails became real. Every signup now receives a beautifully branded welcome email with an F1 quote.
+
 | Commit | Time | Description |
 |:-------|:-----|:------------|
 | `f73d42e` | 11:52 | **feat(backend):** Implement ALL planned features — complete backend overhaul |
@@ -96,6 +106,8 @@
 ## 🛡️ Version 2.4 — Copyright Protection
 **Released:** January 20, 2026 | **Commits:** 1
 
+Added legal safeguards to make it clear this is an **unofficial fan project**—because we love F1, not lawsuits.
+
 | Commit | Time | Description |
 |:-------|:-----|:------------|
 | `c01014d` | 14:09 | **Add:** Copyright protection, "Unofficial Fan Project" badge, update contact info |
@@ -104,6 +116,8 @@
 
 ## 🎨 Version 2.3 — Modern Telemetry
 **Released:** January 16, 2026 | **Commits:** 16
+
+The aesthetic revolution. The entire UI was reimagined with a "race engineer's pit wall" visual language.
 
 ### 🌟 UI/UX Overhaul
 | Commit | Time | Description |
@@ -143,6 +157,8 @@
 ## 📦 Version 2.2 — Stability Release
 **Released:** January 16, 2026 | **Commits:** 21
 
+The "Vercel Wars" chapter. 21 commits to finally crack deployment—a battle against `lightningcss`, `workspaces`, and cold start crashes.
+
 ### 🏗️ Major Restructure
 | Commit | Time | Description |
 |:-------|:-----|:------------|
@@ -174,6 +190,8 @@
 ## 🎯 Version 2.1 — Rivalry Release
 **Released:** January 15, 2026 | **Commits:** 9
 
+The social layer arrived. Head-to-head rivalries, profile access, and backend strong typing.
+
 | Commit | Time | Description |
 |:-------|:-----|:------------|
 | `c3690a1` | 22:00 | **Production Release:** Rivalry Details, Profile Access, Backend Strong Typing [v2.4] |
@@ -189,6 +207,8 @@
 
 ## 🐛 Version 2.0 — Production Ready
 **Released:** January 14-15, 2026 | **Commits:** 20
+
+The "Safari strikes back" chapter. Defensive coding against `DOMException`, cold starts, and import hell.
 
 ### 🔧 API & Backend Fixes
 | Commit | Time | Description |
@@ -222,6 +242,8 @@
 ## 🌱 Version 1.0 — Genesis
 **Released:** January 10-13, 2026 | **Commits:** 3
 
+The **first lines of code**. A Next.js app with Supabase auth and a FastAPI backend—the foundation of everything.
+
 | Commit | Time | Description |
 |:-------|:-----|:------------|
 | `c989077` | Jan 10, 23:37 | **Initial commit** of F1 Predictor project |
@@ -230,28 +252,124 @@
 
 ---
 
-## 📊 Statistics
+## � Version 0.9 — The Blueprint
+**Recorded:** January 05-09, 2026 | **Phase:** Architecture & Design
+
+*Planning logs prior to initial repository initialization.*
+
+The week of whiteboards and Notion docs. Before a single line was typed, the entire architecture was sketched.
+
+| Log Type | Category | Description |
+|:---------|:---------|:------------|
+| `plan` | **Architecture** | **Stack Selection:** Decided on "Trinity Stack": Next.js (FE), FastAPI (BE), Supabase (DB) |
+| `plan` | **Game Logic** | **Scoring System:** Defined core algorithm — Quali (5/3/1), Race (10/8/6), Hat Trick (+2) |
+| `plan` | **Game Logic** | **Bonuses:** Conceptualized "Podium Trio" bonuses (+5 exact order, +2 any order) |
+| `design` | **UI/UX** | **Visual Language:** Established "Cutting Edge" dark mode with scientific/telemetry aesthetic |
+| `plan` | **Features** | **Engagement:** Planned Rivalry System and "Lockout Timer" (1h before Quali) |
+
+---
+
+## 💡 Version 0.1 — Inception
+**Recorded:** November 30, 2025 | **Phase:** Concept
+
+*Where it all began.*
+
+A late November night. The 2025 Abu Dhabi Grand Prix had just ended (spoiler: drama ensued). Somewhere between replays and Reddit threads, a thought crystallized:
+
+> *"What if I could prove I predicted that?"*
+
+| Log Type | Category | Description |
+|:---------|:---------|:------------|
+| `idea` | **Genesis** | **Vision:** Explicit commitment to build a platform for "predicting the outcomes of an F1 weekend" |
+| `meta` | **Identity** | **Naming:** Project codenamed "The F1 Apex Predictions" |
+| `req` | **Analysis** | **Feasibility:** Initial market analysis and requirement gathering for prediction mechanics |
+
+---
+
+## 📊 Project Statistics
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                    PROJECT METRICS                      │
-├─────────────────────────────────────────────────────────┤
-│  Total Commits:          93                             │
-│  Development Period:     12 days (Jan 10-21, 2026)      │
-│  Major Releases:         8 versions                     │
-│  Contributors:           1 (Yash Abhichandani)          │
-│  Primary Languages:      TypeScript, Python, CSS        │
-│  Lines of Code:          ~15,000+                       │
-├─────────────────────────────────────────────────────────┤
-│                   COMMIT BREAKDOWN                      │
-├─────────────────────────────────────────────────────────┤
-│  🐛 Bug Fixes:           ~45 commits                    │
-│  ✨ Features:            ~25 commits                    │
-│  📚 Documentation:       ~10 commits                    │
-│  🔧 Configuration:       ~8 commits                     │
-│  🎨 UI/Styling:          ~5 commits                     │
-└─────────────────────────────────────────────────────────┘
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                           🏎️ F1 APEX — BY THE NUMBERS                         ║
+╠═══════════════════════════════════════════════════════════════════════════════╣
+║                                                                               ║
+║   📅 TIMELINE                                                                 ║
+║   ├─ Conception:           November 30, 2025                                  ║
+║   ├─ First Commit:         January 10, 2026                                   ║
+║   ├─ Production Launch:    January 15, 2026                                   ║
+║   ├─ Current Version:      v3.0 (January 21, 2026)                            ║
+║   └─ Days in Development:  12 days (code) | 52 days (idea to launch)         ║
+║                                                                               ║
+╠═══════════════════════════════════════════════════════════════════════════════╣
+║                                                                               ║
+║   📦 REPOSITORY                                                               ║
+║   ├─ Total Commits:        93                                                 ║
+║   ├─ Major Releases:       10 versions (v0.1 → v3.0)                          ║
+║   ├─ Contributors:         1 (Yash Abhichandani)                              ║
+║   └─ Languages:            TypeScript, Python, CSS, SQL                       ║
+║                                                                               ║
+╠═══════════════════════════════════════════════════════════════════════════════╣
+║                                                                               ║
+║   📁 CODEBASE                                                                 ║
+║   ├─ Frontend Components:  35+                                                ║
+║   ├─ Page Routes:          22                                                 ║
+║   ├─ API Endpoints:        15+                                                ║
+║   ├─ Database Tables:      12                                                 ║
+║   ├─ CSS Lines:            1,025+                                             ║
+║   └─ Estimated Total LOC:  ~15,000+                                           ║
+║                                                                               ║
+╠═══════════════════════════════════════════════════════════════════════════════╣
+║                                                                               ║
+║   🔧 COMMIT BREAKDOWN                                                         ║
+║   ├─ 🐛 Bug Fixes:         ~45 commits (48%)                                  ║
+║   ├─ ✨ Features:          ~25 commits (27%)                                  ║
+║   ├─ 📚 Documentation:     ~10 commits (11%)                                  ║
+║   ├─ 🔧 Configuration:     ~8 commits (9%)                                    ║
+║   └─ 🎨 UI/Styling:        ~5 commits (5%)                                    ║
+║                                                                               ║
+╠═══════════════════════════════════════════════════════════════════════════════╣
+║                                                                               ║
+║   🏆 MILESTONES                                                               ║
+║   ├─ Jan 10:  First commit pushed                                             ║
+║   ├─ Jan 14:  Safari compatibility achieved (7 commits!)                      ║
+║   ├─ Jan 15:  Production deployed on Vercel                                   ║
+║   ├─ Jan 16:  Modern Telemetry UI launched                                    ║
+║   ├─ Jan 20:  Copyright & legal compliance added                              ║
+║   └─ Jan 21:  Analytics Dashboard + Email System live                         ║
+║                                                                               ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
 ```
+
+---
+
+## 🛣️ The Journey Visualized
+
+```
+Nov 30 ─────────── Jan 10 ─── Jan 14 ─── Jan 15 ─── Jan 16 ─────────── Jan 21
+   │                  │          │          │          │                  │
+   ▼                  ▼          ▼          ▼          ▼                  ▼
+💡 IDEA           🌱 v1.0    🐛 v2.0    🎯 v2.1    🎨 v2.3           🚀 v3.0
+Inception         Genesis    Prod Ready  Rivalry    Telemetry        Analytics
+                                                                         
+   ╔═══════════════════════════════════════════════════════════════════════╗
+   ║  52 DAYS: From "What if?" to "It's live."                             ║
+   ╚═══════════════════════════════════════════════════════════════════════╝
+```
+
+---
+
+## 🏅 Notable Achievements
+
+| Achievement | Description | Unlocked |
+|:------------|:------------|:---------|
+| 🌱 **Genesis** | First commit pushed | Jan 10, 2026 |
+| 🚀 **Liftoff** | Production deployment achieved | Jan 15, 2026 |
+| 🎨 **Pixel Perfect** | 1,000+ lines of CSS written | Jan 16, 2026 |
+| 🔐 **Fort Knox** | Bulletproof auth with 5-second hard deadline | Jan 21, 2026 |
+| 📊 **Data Viz** | Analytics Dashboard implemented | Jan 21, 2026 |
+| 📧 **Mail Room** | Resend email integration complete | Jan 21, 2026 |
+| 📱 **Mobile First** | Full responsive optimization | Jan 21, 2026 |
+| 📚 **Documented** | Comprehensive changelog created | Jan 21, 2026 |
 
 ---
 
@@ -264,19 +382,32 @@ When pushing new changes, add entries to the appropriate version section:
 ```
 
 **Commit types:**
-- `feat:` — New feature
-- `fix:` — Bug fix
-- `docs:` — Documentation
-- `style:` — Formatting, styling
-- `refactor:` — Code restructure
-- `perf:` — Performance improvement
-- `chore:` — Maintenance
+| Prefix | Usage |
+|:-------|:------|
+| `feat:` | New feature |
+| `fix:` | Bug fix |
+| `docs:` | Documentation |
+| `style:` | Formatting, styling |
+| `refactor:` | Code restructure |
+| `perf:` | Performance improvement |
+| `chore:` | Maintenance |
+
+**When to create a new version:**
+- **Patch (x.x.N):** Bug fixes, minor tweaks
+- **Minor (x.N.0):** New features, significant improvements
+- **Major (N.0.0):** Breaking changes, major milestones
 
 ---
 
 <div align="center">
 
-**Maintained by [Yash Abhichandani](https://github.com/Yash-Abhichandani)**
+### *"If you no longer go for a gap that exists, you are no longer a racing driver."*
+— Ayrton Senna
+
+---
+
+**Maintained by [Yash Abhichandani](https://github.com/Yash-Abhichandani)**  
+*First Year Student | Full Stack Developer*
 
 *Last updated: January 21, 2026*
 
